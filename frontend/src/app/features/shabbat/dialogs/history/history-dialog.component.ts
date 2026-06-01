@@ -20,7 +20,7 @@ export class HistoryDialogComponent implements OnInit {
   loading = signal(true);
 
   ngOnInit(): void {
-    this.http.get<HistoryRecord[]>('http://localhost:3000/api/history').subscribe({
+    this.http.get<HistoryRecord[]>('/api/history').subscribe({
       next: data => { this.records.set(data); this.loading.set(false); },
       error: () => this.loading.set(false),
     });

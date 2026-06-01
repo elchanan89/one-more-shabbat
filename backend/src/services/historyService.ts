@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as shabbatService from './shabbatService';
+import { DATA_DIR, SEED_DIR, ensureDataDir } from '../config';
 
 export interface HistoryRecord {
   id: string;
@@ -8,13 +9,17 @@ export interface HistoryRecord {
   description: string;
 }
 
-const DATA_FILE = path.join(__dirname, '../../data/history.json');
+const DATA_FILE = path.join(DATA_DIR, 'history.json');
+const SEED_FILE = path.join(SEED_DIR, 'history.json');
 const DEFAULT_OPTION_TEXT = 'נשארים בבית';
 
 function readData(): HistoryRecord[] {
   if (!fs.existsSync(DATA_FILE)) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2), 'utf-8');
-    return [];
+    ensureDataDir();
+    // Seed from the committed seed file on first run (or after a fresh volume mount).
+    const initial = fs.existsSync(SEED_FILE) ? fs.readFileSync(SEED_FILE, 'utf-8') : '[]';
+    fs.writeFileSync(DATA_FILE, initial, 'utf-8');
+    return JSON.parse(initial) as HistoryRecord[];
   }
   return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8')) as HistoryRecord[];
 }

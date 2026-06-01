@@ -6,7 +6,7 @@ import { HebrewInfo, ShabbatEvent } from '../models/shabbat.model';
 @Injectable({ providedIn: 'root' })
 export class ShabbatService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/shabbatot';
+  private apiUrl = '/api/shabbatot';
 
   getAll(): Observable<ShabbatEvent[]> {
     return this.http.get<ShabbatEvent[]>(this.apiUrl);

@@ -22,3 +22,6 @@ Thumbs.db
 
 # Angular cache
 .angular/cache/
+
+# Runtime data (regenerated on boot; history seeds from backend/seed/)
+backend/data/

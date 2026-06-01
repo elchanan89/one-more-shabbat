@@ -2,11 +2,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { ShabbatEvent } from '../models/shabbat.model';
+import { DATA_DIR, ensureDataDir } from '../config';
 
-const DATA_FILE = path.join(__dirname, '../../data/shabbatot.json');
+const DATA_FILE = path.join(DATA_DIR, 'shabbatot.json');
 
 function readData(): ShabbatEvent[] {
   if (!fs.existsSync(DATA_FILE)) {
+    ensureDataDir();
     fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2), 'utf-8');
     return [];
   }
