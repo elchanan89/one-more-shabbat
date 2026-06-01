@@ -56,6 +56,10 @@ export function bulkInsert(events: ShabbatEvent[]): void {
   writeData([...all, ...events]);
 }
 
+export function saveAll(events: ShabbatEvent[]): void {
+  writeData(events);
+}
+
 export function remove(id: string): boolean {
   const all = readData();
   const filtered = all.filter(s => s.id !== id);

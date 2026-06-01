@@ -78,3 +78,39 @@ export function initCurrentHebrewYear(): void {
     console.log(`[init] Hebrew year ${year} already complete (${existing.length} entries)`);
   }
 }
+
+/**
+ * Re-derive parasha/hebrewDate for existing Shabbatot from @hebcal/core, so any
+ * change to the calendar logic (e.g. Israel vs Diaspora schedule) propagates even
+ * to data already persisted on a volume. Selections (selectedOptionId,
+ * shabbatOptions) are left untouched.
+ */
+export function refreshParashaMetadata(): void {
+  const all = shabbatService.getAll();
+  const now = new Date().toISOString();
+  let healed = 0;
+
+  for (const ev of all) {
+    try {
+      const info = getHebrewInfo(ev.gregorianDate);
+      if (
+        info.parasha !== ev.parasha ||
+        info.parashaHe !== ev.parashaHe ||
+        info.hebrewDate !== ev.hebrewDate
+      ) {
+        ev.parasha = info.parasha;
+        ev.parashaHe = info.parashaHe;
+        ev.hebrewDate = info.hebrewDate;
+        ev.updatedAt = now;
+        healed++;
+      }
+    } catch {
+      // leave this entry as-is if the calendar lookup fails
+    }
+  }
+
+  if (healed > 0) {
+    shabbatService.saveAll(all);
+    console.log(`[heal] Refreshed parasha metadata for ${healed} Shabbatot`);
+  }
+}

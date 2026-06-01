@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import shabbatotRouter from './routes/shabbatot';
 import historyRouter from './routes/history';
 import { errorHandler } from './middleware/errorHandler';
-import { initCurrentHebrewYear } from './services/hebrewYearService';
+import { initCurrentHebrewYear, refreshParashaMetadata } from './services/hebrewYearService';
 import { archivePassedShabbatot } from './services/historyService';
 
 const app = express();
@@ -37,6 +37,7 @@ app.listen(PORT, () => {
   console.log(`One More Shabbat API running on port ${PORT}`);
   try {
     initCurrentHebrewYear();
+    refreshParashaMetadata();
     archivePassedShabbatot();
   } catch (err) {
     console.error('[init] Failed to initialize:', err);

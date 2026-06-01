@@ -40,6 +40,7 @@ export function getHebrewInfo(gregorianDateStr: string): HebrewInfo {
     end: hdate,
     sedrot: true,
     noHolidays: true,
+    il: true, // Israel reading schedule (differs from Diaspora after Shavuot 2026, etc.)
   });
 
   const parashaEvent = events.find(e => !!(e.getFlags() & flags.PARSHA_HASHAVUA));
