@@ -1,0 +1,120 @@
+Shabbat Management Application – Change Request
+1. Simplify the Shabbat Object
+
+The Shabbat object should contain only the shabbatOptions field.
+
+Remove all other fields and related functionality, including:
+
+Summary (shortSummary)
+Category
+Checklist
+Any additional detail fields
+2. Remove the Shabbat Details Edit Popup
+
+The current Shabbat Details edit popup should be removed entirely.
+
+The only popup that should remain is the Shabbat Options popup, allowing the user to choose between:
+
+Family Members
+Parents
+3. Add a History Button
+
+Add a new History button positioned on the left side of the header, opposite the Upcoming Shabbats title.
+
+4. History Popup
+
+When the user clicks the History button:
+
+Open a popup displaying all past Shabbats.
+For each Shabbat, display:
+Shabbat title/date information
+The selected option (Family Members or Parents)
+The popup should support vertical scrolling.
+All historical Shabbats should be displayed in a single scrollable list.
+The popup is read-only and intended for reviewing previous selections.
+
+
+Initial Historical Data
+
+Pre-populate the History list with the following records (in Hebrew):
+
+תאריך	פרטי השבת
+03/01/2026	הילה התארחה
+10/01/2026	דובלה התארח
+17/01/2026	שמוליק התארח לחצי שבת
+24/01/2026	אילה של יהונתן התארחה
+31/01/2026	שבת שבע ברכות של רחלי וחיים בבית שמש
+07/02/2026	הילה התארחה
+14/02/2026	שבת לבד
+21/02/2026	ההורים אצל דובלה
+28/02/2026	ההורים אצל יהונתן
+07/03/2026	הילה התארחה
+14/03/2026	רחלי וחיים ושמוליק התארחו
+21/03/2026	שבת בצפון
+28/03/2026	שבת משפחתית זינגר למדן
+04/04/2026	הילה ודובלה התארחו
+11/04/2026	חנני ודניאל התארחו
+18/04/2026	הילה ושמוליק התארחו
+25/04/2026	דובלה התארח
+02/05/2026	שמוליק וחלי התארחו
+09/05/2026	יהונתן היה, ודובלה קפץ לקראת סוף שבת
+16/05/2026	מייקי היה וארי ואן לסעודה שניה
+23/05/2026	הילה, דובלה ושמוליק וחלי (חלקית) התארחו
+30/05/2026	שבת אצל דובי
+Data Structure
+
+Each history record should contain:
+
+Date
+Description (Hebrew text)
+Display text
+
+The History popup should render this list on initial load and continue appending new completed Shabbats over time.
+
+
+5. Add Splash Screen
+
+Add a splash screen that appears when the application loads.
+file location: C:\projects\Claude code\OdShabat\splash.mp4
+
+Requirements:
+
+Use the provided video file: splash.mp4.
+The splash screen should play automatically on application startup.
+Display the splash animation for approximately 3 seconds.
+After the animation completes, automatically transition to the main application screen.
+The splash screen should be shown only during the initial application load.
+
+6. Update Application Favicon
+
+Replace the default Angular favicon with the new provided favicon file:
+
+favicon_family.ico
+file location: C:\projects\Claude code\OdShabat\favicon_family.ico
+
+Requirements:
+Remove the existing Angular favicon.
+Configure the application to use favicon_family.ico as the browser tab icon across the entire application.
+Technical Notes
+The Shabbat data model should be reduced to a single configurable field: shabbatOptions.
+Remove all UI, API, validation, and persistence logic related to Summary, Category, Checklist, and other deprecated fields.
+The History popup should be read-only.
+The splash screen should not block application initialization; it should only serve as a visual loading experience during startup.
+
+
+7. Add Reset Selection Option for Parent Mode
+In the Shabbat selection popup, when the card is in Parents mode, add a red Reset Selection button.
+
+Requirements
+The button should be visually distinct and styled as a destructive action (red color).
+When clicked, the user should be prompted for confirmation before the action is executed.
+Upon confirmation:
+The current selection for that Shabbat is cleared.
+The stored shabbatOptions value is reset to its unselected state.
+The corresponding Shabbat card returns to the original unselected/disabled (grayed-out) appearance.
+The card should behave exactly as a newly created Shabbat that has not yet been assigned an option.
+The reset action should immediately update the UI and persist the change in storage/backend.
+The reset functionality should only be available when the Shabbat currently has a selection assigned.
+
+8. Add Delete Option for Family-Created Shabbat Options
+For every Shabbat option created by a family member, display a small red X (Delete) icon next to the option.

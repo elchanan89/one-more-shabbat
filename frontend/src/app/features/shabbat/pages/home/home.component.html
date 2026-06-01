@@ -1,0 +1,122 @@
+<!-- ═══ App Header ═══ -->
+<header class="app-header">
+  <div class="header-inner">
+    <h1 class="app-title">
+      <span class="title-candle">🕯️</span>
+      <span class="title-text">עוד שבת</span>
+      <span class="title-candle">🕯️</span>
+    </h1>
+    <div class="title-rule"><span class="title-star">✦</span></div>
+  </div>
+</header>
+
+<!-- ═══ Main ═══ -->
+<main class="main">
+
+  <!-- Section header -->
+  <div class="section-header">
+    <div class="section-title-group">
+      <h2 class="section-title">שבתות קרובות</h2>
+      <mat-icon class="section-icon">calendar_today</mat-icon>
+    </div>
+    <button mat-stroked-button class="history-btn" (click)="openHistory()">
+      <mat-icon>history</mat-icon>
+      היסטוריה
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="state-center">
+      <mat-progress-spinner mode="indeterminate" diameter="40" />
+      <p>טוען את השנה העברית...</p>
+    </div>
+  } @else if (error()) {
+    <div class="state-center">
+      <span class="state-emoji">⚠️</span>
+      <p>{{ error() }}</p>
+      <button mat-flat-button (click)="loadEvents()">נסה שוב</button>
+    </div>
+  } @else {
+
+    @if (totalCount() > 0) {
+      <p class="events-count">{{ visibleEvents().length }} שבתות קרובות</p>
+    }
+
+    <!-- ═══ Timeline ═══ -->
+    <div class="timeline">
+
+      @for (event of visibleEvents(); track event.id; let first = $first; let last = $last) {
+        <div class="t-row" [class.t-row-empty]="isEmpty(event)">
+
+          <!-- Date panel (rightmost in RTL) -->
+          <div class="t-date">
+            <div class="t-date-greg">{{ formatDateHe(event.gregorianDate) }}</div>
+            <div class="t-date-heb">{{ event.hebrewDate }}</div>
+            @if (daysUntil(event.gregorianDate) >= 0) {
+              <span class="t-days-badge">{{ daysUntil(event.gregorianDate) }} ימים</span>
+            } @else {
+              <span class="t-days-badge t-days-past">עבר</span>
+            }
+          </div>
+
+          <!-- Rail + Dot -->
+          <div class="t-rail-col">
+            <div class="t-line t-line-top" [class.transparent]="first"></div>
+            <div class="t-dot"
+                 [class.active]="daysUntil(event.gregorianDate) >= 0 && daysUntil(event.gregorianDate) <= 14"
+                 [class.past]="daysUntil(event.gregorianDate) < 0"
+                 [class.empty-dot]="isEmpty(event)">
+            </div>
+            <div class="t-line t-line-bottom" [class.transparent]="last && !hasMore()"></div>
+          </div>
+
+          <!-- Card -->
+          <div class="t-card-col">
+            <app-shabbat-card
+              [event]="event"
+              [isEmpty]="isEmpty(event)"
+              (cardClick)="onCardClick($event)"
+            />
+          </div>
+
+        </div>
+      }
+
+      <!-- Load More row -->
+      @if (hasMore()) {
+        <div class="t-row t-load-more-row">
+          <div class="t-date"></div>
+          <div class="t-rail-col">
+            <div class="t-line t-line-top"></div>
+            <div class="t-end-dot"></div>
+          </div>
+          <div class="t-card-col load-more-col">
+            <button mat-stroked-button class="load-more-btn" (click)="loadMore()">
+              <mat-icon>expand_more</mat-icon>
+              הצג עוד
+            </button>
+          </div>
+        </div>
+      } @else if (totalCount() > 0) {
+        <div class="t-end">
+          <div></div>
+          <div class="t-rail-col">
+            <div class="t-line t-line-top"></div>
+            <div class="t-end-dot"></div>
+          </div>
+          <div></div>
+        </div>
+      }
+
+    </div>
+
+    @if (totalCount() === 0) {
+      <div class="state-center">
+        <span class="state-emoji">🕯️</span>
+        <h3>אין שבתות</h3>
+      </div>
+    }
+
+  }
+
+</main>

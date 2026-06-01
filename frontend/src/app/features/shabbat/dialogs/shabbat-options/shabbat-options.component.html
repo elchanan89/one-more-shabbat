@@ -1,0 +1,80 @@
+<div class="dialog-header" mat-dialog-title>
+  <div class="title-block">
+    <h2 class="parasha-title">{{ event.parashaHe || event.parasha }}</h2>
+    <p class="parasha-date">{{ event.hebrewDate }}</p>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="cancel()" aria-label="סגור">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+
+  <!-- Mode toggle -->
+  <div class="mode-toggle">
+    <button class="mode-btn" [class.active]="mode() === 'family'" (click)="setMode('family')">
+      👨‍👩‍👧&nbsp;&nbsp;בני משפחה
+    </button>
+    <button class="mode-btn" [class.active]="mode() === 'parents'" (click)="setMode('parents')">
+      👴&nbsp;&nbsp;הורים
+    </button>
+  </div>
+
+  <!-- Family mode -->
+  @if (mode() === 'family') {
+    <p class="mode-hint">הוסף הצעה לשבת עבור ההורים</p>
+
+    <input
+      type="text"
+      class="suggestion-input"
+      placeholder="לדוגמה: יונתן מזמין לאירוח"
+      [value]="newOptionText()"
+      (input)="onInputChange($event)"
+      (keydown.enter)="save()"
+      autofocus
+    />
+
+    @if (localOptions().length) {
+      <div class="existing-options">
+        <p class="existing-label">הצעות קיימות:</p>
+        @for (opt of localOptions(); track opt.id) {
+          <div class="opt-chip-row">
+            <span class="opt-chip">{{ opt.text }}</span>
+            <button class="opt-delete-btn" (click)="removeOption(opt.id)" aria-label="מחק הצעה">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- Parents mode -->
+  @if (mode() === 'parents') {
+    <p class="mode-hint">בחרו את האפשרות המתאימה לכם</p>
+
+    <div class="parents-options">
+      @for (opt of allOptions(); track opt.id) {
+        <div class="option-row"
+             [class.selected]="localSelectedId() === opt.id"
+             (click)="localSelectedId.set(opt.id)">
+          <span class="radio-dot" [class.checked]="localSelectedId() === opt.id"></span>
+          <span class="option-text">{{ opt.text }}</span>
+        </div>
+      }
+    </div>
+  }
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  @if (mode() === 'parents' && hasSelection()) {
+    <button class="reset-btn" (click)="resetSelection()">
+      <mat-icon>restart_alt</mat-icon>
+      אפס בחירה
+    </button>
+  }
+  <span class="actions-spacer"></span>
+  <button mat-button (click)="cancel()">ביטול</button>
+  <button mat-flat-button class="btn-slate" (click)="save()">שמור</button>
+</mat-dialog-actions>

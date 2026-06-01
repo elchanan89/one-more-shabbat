@@ -1,0 +1,32 @@
+<div class="card" [class.card-empty]="isEmpty()" (click)="onCardClick()" role="button" tabindex="0"
+     (keydown.enter)="onCardClick()" (keydown.space)="onCardClick()">
+
+  @if (event().selectedOptionId) {
+    <span class="filled-badge" aria-hidden="true">
+      <mat-icon>check_circle</mat-icon>
+    </span>
+  }
+
+  <div class="card-body">
+
+    <div class="card-icon" [style.background]="isEmpty() ? '#F3F4F6' : '#E0F2FE'">
+      <span class="cat-emoji">{{ isEmpty() ? '🕯️' : '✨' }}</span>
+    </div>
+
+    <div class="card-main">
+      <h3 class="card-title">{{ event().parashaHe || event().parasha }}</h3>
+      <p class="card-date">{{ event().hebrewDate }}</p>
+
+      @if (selectedText) {
+        <p class="card-option-selected">✔ {{ selectedText }}</p>
+      } @else if (event().shabbatOptions?.length) {
+        <p class="card-option-pending">
+          {{ event().shabbatOptions!.length }} הצעות · ממתין לבחירה
+        </p>
+      } @else {
+        <p class="card-option-hint">לחץ לבחירת אפשרות שבת</p>
+      }
+    </div>
+
+  </div>
+</div>

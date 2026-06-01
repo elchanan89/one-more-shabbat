@@ -1,0 +1,89 @@
+:root {
+  --gold:          #a37828;
+  --gold-light:    #d4a843;
+  --slate:         #1e293b;
+  --near-black:    #111111;
+
+  --bg:            #ffffff;
+  --bg-subtle:     #ffffff;
+  --primary:       #a37828;
+  --primary-dark:  #d4a843;
+  --text-primary:  #111111;
+  --text-secondary:#64748b;
+  --border:        #e8dccf;
+  --card-shadow:   0 4px 16px rgba(0, 0, 0, 0.07);
+
+  // Category A: regular/family
+  --cat-a-bg:  #E0F2FE;
+  --cat-a-icon:#0369A1;
+
+  // Category B: special/vacation
+  --cat-b-bg:  #FFEDD5;
+  --cat-b-icon:#C2410C;
+
+  // Timeline
+  --rail-color:   linear-gradient(to bottom, #a37828, #d4a843);
+  --dot-active:   #a37828;
+  --dot-inactive: #d4a843;
+}
+
+#stars-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+app-root {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  // Montserrat for Latin UI text; Heebo as Hebrew fallback
+  font-family: 'Montserrat', 'Heebo', sans-serif;
+}
+
+h1, h2, h3, h4,
+.font-serif {
+  // Lora for display headings; Heebo fallback for Hebrew glyphs
+  font-family: 'Lora', 'Heebo', serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--bg-subtle);
+  direction: rtl;
+  color: var(--text-primary);
+}
+
+// Material typography override
+.mat-typography,
+.mdc-dialog__content,
+.mat-mdc-form-field {
+  font-family: 'Montserrat', 'Heebo', sans-serif !important;
+}
+
+// Full-screen dialogs on mobile
+@media (max-width: 599px) {
+  .cdk-overlay-pane {
+    max-width: 100vw !important;
+    width: 100vw !important;
+  }
+  .mat-mdc-dialog-container {
+    --mdc-dialog-container-shape: 0px !important;
+  }
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }
