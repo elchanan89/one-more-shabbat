@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
 import * as shabbatService from '../services/shabbatService';
 import { getHebrewInfo } from '../services/hebrewCalendarService';
+import { archivePassedShabbatot } from '../services/historyService';
 
 export function getAll(req: Request, res: Response): void {
+  // Keep history current on every app load (server may run for weeks without restart).
+  archivePassedShabbatot();
   res.json(shabbatService.getAll());
 }
 
