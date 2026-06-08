@@ -5,7 +5,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { ShabbatEvent } from '../../../../core/models/shabbat.model';
+import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
 import { ShabbatService } from '../../../../core/services/shabbat.service';
 import { ShabbatCardComponent } from '../../components/shabbat-card/shabbat-card.component';
 import { ShabbatOptionsComponent } from '../../dialogs/shabbat-options/shabbat-options.component';
@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
   }
 
   isEmpty(event: ShabbatEvent): boolean {
-    return !event.selectedOptionId && !event.shabbatOptions?.length;
+    return getSelectedIds(event).length === 0 && !event.shabbatOptions?.length;
   }
 
   onCardClick(event: ShabbatEvent): void {

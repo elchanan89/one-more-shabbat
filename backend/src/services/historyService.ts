@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as shabbatService from './shabbatService';
 import { DATA_DIR, SEED_DIR, ensureDataDir } from '../config';
+import { ShabbatEvent } from '../models/shabbat.model';
 
 export interface HistoryRecord {
   id: string;
@@ -32,6 +33,21 @@ export function getAll(): HistoryRecord[] {
   return readData().sort((a, b) => b.gregorianDate.localeCompare(a.gregorianDate));
 }
 
+/** Chosen option ids, handling legacy single-select data. */
+function selectedIds(ev: ShabbatEvent): string[] {
+  if (Array.isArray(ev.selectedOptionIds)) return ev.selectedOptionIds;
+  if (ev.selectedOptionId) return [ev.selectedOptionId];
+  return [];
+}
+
+/** Resolve option ids to their display texts (default option + family-added). */
+function optionTextsFor(ev: ShabbatEvent, ids: string[]): string[] {
+  const opts = [{ id: '__default__', text: DEFAULT_OPTION_TEXT }, ...(ev.shabbatOptions ?? [])];
+  return ids
+    .map(id => opts.find(o => o.id === id)?.text)
+    .filter((t): t is string => !!t);
+}
+
 /**
  * Archive every Shabbat whose date has already passed and that has a chosen
  * option, into the history list. Deduped by date so it is safe to run on each
@@ -48,13 +64,11 @@ export function archivePassedShabbatot(): void {
   let added = 0;
   for (const ev of shabbatService.getAll()) {
     if (ev.gregorianDate >= todayStr) continue;        // not past yet
-    if (!ev.selectedOptionId) continue;                 // no choice made
+    const ids = selectedIds(ev);
+    if (ids.length === 0) continue;                     // no choice made
     if (existingDates.has(ev.gregorianDate)) continue;  // already archived
 
-    const description =
-      ev.selectedOptionId === '__default__'
-        ? DEFAULT_OPTION_TEXT
-        : ev.shabbatOptions?.find(o => o.id === ev.selectedOptionId)?.text ?? DEFAULT_OPTION_TEXT;
+    const description = optionTextsFor(ev, ids).join(', ') || DEFAULT_OPTION_TEXT;
 
     history.push({
       id: `hist_${ev.gregorianDate}`,

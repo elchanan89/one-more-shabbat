@@ -1,7 +1,7 @@
 <div class="card" [class.card-empty]="isEmpty()" (click)="onCardClick()" role="button" tabindex="0"
      (keydown.enter)="onCardClick()" (keydown.space)="onCardClick()">
 
-  @if (event().selectedOptionId) {
+  @if (selectedIds.length) {
     <span class="filled-badge" aria-hidden="true">
       <mat-icon>check_circle</mat-icon>
     </span>

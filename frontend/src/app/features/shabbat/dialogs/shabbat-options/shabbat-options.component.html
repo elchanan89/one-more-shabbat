@@ -51,14 +51,18 @@
 
   <!-- Parents mode -->
   @if (mode() === 'parents') {
-    <p class="mode-hint">בחרו את האפשרות המתאימה לכם</p>
+    <p class="mode-hint">בחרו אפשרות אחת או יותר</p>
 
     <div class="parents-options">
       @for (opt of allOptions(); track opt.id) {
         <div class="option-row"
-             [class.selected]="localSelectedId() === opt.id"
-             (click)="localSelectedId.set(opt.id)">
-          <span class="radio-dot" [class.checked]="localSelectedId() === opt.id"></span>
+             [class.selected]="isSelected(opt.id)"
+             (click)="toggleOption(opt.id)">
+          <span class="check-box" [class.checked]="isSelected(opt.id)">
+            @if (isSelected(opt.id)) {
+              <mat-icon>check</mat-icon>
+            }
+          </span>
           <span class="option-text">{{ opt.text }}</span>
         </div>
       }
