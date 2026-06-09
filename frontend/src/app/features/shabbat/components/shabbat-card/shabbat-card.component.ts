@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ShabbatEvent } from '../../../../core/models/shabbat.model';
+import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
 
 @Component({
   selector: 'app-shabbat-card',
@@ -13,11 +13,18 @@ export class ShabbatCardComponent {
   isEmpty = input(false);
   cardClick = output<ShabbatEvent>();
 
+  get selectedIds(): string[] {
+    return getSelectedIds(this.event());
+  }
+
   get selectedText(): string {
-    const id = this.event().selectedOptionId;
-    if (!id) return '';
+    const ids = this.selectedIds;
+    if (!ids.length) return '';
     const opts = [{ id: '__default__', text: 'נשארים בבית' }, ...(this.event().shabbatOptions ?? [])];
-    return opts.find(o => o.id === id)?.text ?? '';
+    return ids
+      .map(id => opts.find(o => o.id === id)?.text)
+      .filter((t): t is string => !!t)
+      .join(' + ');
   }
 
   onCardClick(): void {

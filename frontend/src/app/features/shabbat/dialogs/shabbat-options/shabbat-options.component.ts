@@ -2,7 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ShabbatEvent, ShabbatOption } from '../../../../core/models/shabbat.model';
+import { getSelectedIds, ShabbatEvent, ShabbatOption } from '../../../../core/models/shabbat.model';
 
 const DEFAULT_OPTION: ShabbatOption = { id: '__default__', text: 'נשארים בבית' };
 
@@ -25,7 +25,7 @@ export class ShabbatOptionsComponent {
   mode = signal<Mode>('family');
   newOptionText = signal('');
   localOptions = signal<ShabbatOption[]>([...(this.data.event.shabbatOptions ?? [])]);
-  localSelectedId = signal(this.data.event.selectedOptionId ?? '');
+  localSelectedIds = signal<string[]>([...getSelectedIds(this.data.event)]);
 
   get event(): ShabbatEvent { return this.data.event; }
 
@@ -34,7 +34,17 @@ export class ShabbatOptionsComponent {
     ...this.localOptions(),
   ]);
 
-  hasSelection = computed(() => !!this.data.event.selectedOptionId);
+  hasSelection = computed(() => getSelectedIds(this.data.event).length > 0);
+
+  isSelected(id: string): boolean {
+    return this.localSelectedIds().includes(id);
+  }
+
+  toggleOption(id: string): void {
+    this.localSelectedIds.update(ids =>
+      ids.includes(id) ? ids.filter(x => x !== id) : [...ids, id]
+    );
+  }
 
   setMode(m: Mode): void {
     this.mode.set(m);
@@ -46,6 +56,7 @@ export class ShabbatOptionsComponent {
 
   removeOption(id: string): void {
     this.localOptions.update(opts => opts.filter(o => o.id !== id));
+    this.localSelectedIds.update(ids => ids.filter(x => x !== id));
   }
 
   save(): void {
@@ -56,15 +67,17 @@ export class ShabbatOptionsComponent {
         : this.localOptions();
       this.dialogRef.close({ patch: { shabbatOptions: updatedOptions } });
     } else {
+      // Persist multi-select; clear the legacy field so it doesn't shadow it.
       this.dialogRef.close({
-        patch: { selectedOptionId: this.localSelectedId() || undefined },
+        patch: { selectedOptionIds: this.localSelectedIds(), selectedOptionId: null },
       });
     }
   }
 
   resetSelection(): void {
-    if (!confirm('לאפס את הבחירה הנוכחית? הכרטיסייה תחזור למצב ריק.')) return;
-    this.dialogRef.close({ patch: { selectedOptionId: null, shabbatOptions: [] } });
+    if (!confirm('לאפס את הבחירה הנוכחית? ההצעות יישארו.')) return;
+    // Clear only the parents' choice — keep the family-added options.
+    this.dialogRef.close({ patch: { selectedOptionIds: [], selectedOptionId: null } });
   }
 
   cancel(): void {
