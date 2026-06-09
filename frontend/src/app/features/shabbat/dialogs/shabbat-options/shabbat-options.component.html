@@ -36,15 +36,18 @@
 
     @if (localOptions().length) {
       <div class="existing-options">
-        <p class="existing-label">הצעות קיימות:</p>
-        @for (opt of localOptions(); track opt.id) {
-          <div class="opt-chip-row">
-            <span class="opt-chip">{{ opt.text }}</span>
-            <button class="opt-delete-btn" (click)="removeOption(opt.id)" aria-label="מחק הצעה">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-        }
+        <p class="existing-label">הצעות קיימות</p>
+        <div class="opt-list">
+          @for (opt of localOptions(); track opt.id) {
+            <div class="opt-item">
+              <span class="opt-icon"><mat-icon>local_florist</mat-icon></span>
+              <span class="opt-text">{{ opt.text }}</span>
+              <button class="opt-del" (click)="removeOption(opt.id)" aria-label="מחק הצעה">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          }
+        </div>
       </div>
     }
   }

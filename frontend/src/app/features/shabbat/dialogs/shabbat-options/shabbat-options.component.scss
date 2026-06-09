@@ -39,12 +39,8 @@
   flex-direction: column;
   gap: 16px;
   padding-top: 12px;
-  width: 400px;
-  max-width: 100%;
-}
-
-@media (max-width: 599px) {
-  .dialog-content { width: 100%; }
+  width: 100%;
+  box-sizing: border-box;
 }
 
 // Mode toggle
@@ -108,45 +104,75 @@
 .existing-options {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .existing-label {
   font-size: 12px;
+  font-weight: 600;
   color: var(--text-secondary);
   margin: 0;
+  letter-spacing: 0.02em;
 }
 
-.opt-chip-row {
+.opt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.opt-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  background: #fffdf7;
+  border: 1px solid rgba(163, 120, 40, 0.25);
+  border-radius: 14px;
+  padding: 9px 10px 9px 12px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:hover {
+    border-color: rgba(163, 120, 40, 0.5);
+    box-shadow: 0 2px 10px rgba(163, 120, 40, 0.1);
+  }
 }
 
-.opt-chip {
-  background: rgba(163, 120, 40, 0.12);
-  color: #7a5a18;
-  border-radius: 12px;
-  padding: 5px 12px;
-  font-size: 13px;
-  font-weight: 500;
+.opt-icon {
+  display: flex;
+  flex-shrink: 0;
+  color: var(--gold);
+
+  mat-icon { font-size: 19px; width: 19px; height: 19px; }
+}
+
+.opt-text {
   flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  word-break: break-word;
 }
 
-.opt-delete-btn {
-  background: none;
+.opt-del {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
   border: none;
-  cursor: pointer;
+  border-radius: 9px;
+  background: rgba(239, 68, 68, 0.1);
   color: #ef4444;
-  padding: 2px;
   display: flex;
   align-items: center;
-  border-radius: 50%;
-  transition: background 0.15s;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
 
-  &:hover { background: rgba(239, 68, 68, 0.1); }
+  &:hover { background: rgba(239, 68, 68, 0.18); }
+  &:active { transform: scale(0.9); }
 
-  mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
 }
 
 .dialog-actions {
@@ -154,6 +180,9 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(163, 120, 40, 0.15);
 }
 
 .actions-spacer {
