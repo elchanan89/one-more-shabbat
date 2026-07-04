@@ -16,7 +16,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="web-app-manifest-512x512.png">
   <link rel="apple-touch-icon" href="web-app-manifest-192x192.png">
   <link rel="manifest" href="manifest.webmanifest">
-  <meta name="theme-color" content="#a37828">
+  <meta name="theme-color" content="#0a0e1a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -46,7 +46,7 @@
     }));
 
     function animate() {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.fillStyle = 'rgba(8, 11, 20, 0.3)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (const star of stars) {
@@ -57,7 +57,7 @@
         }
         ctx.save();
         ctx.globalAlpha = star.opacity;
-        ctx.fillStyle = '#a37828';
+        ctx.fillStyle = '#f0ce7d';
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
         ctx.fill();

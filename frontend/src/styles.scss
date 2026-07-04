@@ -1,30 +1,39 @@
 :root {
-  --gold:          #a37828;
+  --gold:          #d4a843;
+  --gold-bright:   #f0ce7d;
+  --gold-deep:     #a37828;
   --gold-light:    #d4a843;
-  --slate:         #1e293b;
-  --near-black:    #111111;
+  --slate:         #e2e8f0;
+  --near-black:    #080b14;
 
-  --bg:            #ffffff;
-  --bg-subtle:     #ffffff;
-  --primary:       #a37828;
-  --primary-dark:  #d4a843;
-  --text-primary:  #111111;
-  --text-secondary:#64748b;
-  --border:        #e8dccf;
-  --card-shadow:   0 4px 16px rgba(0, 0, 0, 0.07);
+  --bg:            #0a0e1a;
+  --bg-subtle:     #080b14;
+  --surface:       rgba(255, 255, 255, 0.045);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --glass-border:  rgba(212, 168, 67, 0.18);
+  --primary:       #d4a843;
+  --primary-dark:  #f0ce7d;
+  --text-primary:  #f1f5f9;
+  --text-secondary:#8b96ab;
+  --border:        rgba(255, 255, 255, 0.08);
+  --card-shadow:   0 8px 32px -10px rgba(0, 0, 0, 0.6);
+  --glow-gold:     0 0 28px -6px rgba(212, 168, 67, 0.45);
+  --radius-card:   20px;
+  --radius-pill:   999px;
+  --ring:          0 0 0 3px rgba(212, 168, 67, 0.22);
 
   // Category A: regular/family
-  --cat-a-bg:  #E0F2FE;
-  --cat-a-icon:#0369A1;
+  --cat-a-bg:  rgba(56, 189, 248, 0.14);
+  --cat-a-icon:#7dd3fc;
 
   // Category B: special/vacation
-  --cat-b-bg:  #FFEDD5;
-  --cat-b-icon:#C2410C;
+  --cat-b-bg:  rgba(251, 146, 60, 0.14);
+  --cat-b-icon:#fdba74;
 
   // Timeline
-  --rail-color:   linear-gradient(to bottom, #a37828, #d4a843);
-  --dot-active:   #a37828;
-  --dot-inactive: #d4a843;
+  --rail-color:   linear-gradient(to bottom, rgba(212, 168, 67, 0.75), rgba(212, 168, 67, 0.18));
+  --dot-active:   #f0ce7d;
+  --dot-inactive: rgba(212, 168, 67, 0.45);
 }
 
 #stars-canvas {
@@ -41,6 +50,18 @@ app-root {
   display: block;
   position: relative;
   z-index: 1;
+
+  // Ambient auras floating above the starfield
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(1000px 480px at 82% -8%, rgba(212, 168, 67, 0.13), transparent 62%),
+      radial-gradient(820px 540px at 10% 110%, rgba(99, 102, 241, 0.10), transparent 60%);
+  }
 }
 
 *,
@@ -67,11 +88,48 @@ body {
   color: var(--text-primary);
 }
 
+::selection {
+  background: rgba(212, 168, 67, 0.4);
+  color: #fff;
+}
+
 // Material typography override
 .mat-typography,
 .mdc-dialog__content,
 .mat-mdc-form-field {
   font-family: 'Montserrat', 'Heebo', sans-serif !important;
+}
+
+// ── Premium dark dialog shell ─────────────────
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 28px;
+  --mdc-dialog-supporting-text-color: var(--text-primary);
+  --mdc-dialog-subhead-color: var(--text-primary);
+}
+
+.cdk-overlay-pane .mat-mdc-dialog-surface {
+  background: linear-gradient(165deg, rgba(22, 27, 44, 0.97), rgba(9, 12, 22, 0.99)) !important;
+  border: 1px solid rgba(212, 168, 67, 0.16);
+  box-shadow:
+    0 32px 90px -20px rgba(0, 0, 0, 0.85),
+    0 0 70px -24px rgba(212, 168, 67, 0.35) !important;
+  color: var(--text-primary);
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgba(3, 5, 10, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+// Dialog cancel/text buttons
+.mat-mdc-dialog-actions .mat-mdc-button:not(.btn-slate) {
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-pill) !important;
+}
+
+// Spinner in gold
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: var(--gold);
 }
 
 // Full-screen dialogs on mobile
@@ -85,5 +143,6 @@ body {
   }
 }
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 2px; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: rgba(212, 168, 67, 0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(212, 168, 67, 0.6); }
