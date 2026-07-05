@@ -75,7 +75,9 @@
             <app-shabbat-card
               [event]="event"
               [isEmpty]="isEmpty(event)"
+              [familyCount]="familyCounts()[event.gregorianDate] || 0"
               (cardClick)="onCardClick($event)"
+              (familyClick)="openFamilyEvents($event)"
             />
           </div>
 

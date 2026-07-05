@@ -11,7 +11,9 @@ import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.mo
 export class ShabbatCardComponent {
   event = input.required<ShabbatEvent>();
   isEmpty = input(false);
+  familyCount = input(0);
   cardClick = output<ShabbatEvent>();
+  familyClick = output<ShabbatEvent>();
 
   get selectedIds(): string[] {
     return getSelectedIds(this.event());
@@ -29,5 +31,10 @@ export class ShabbatCardComponent {
 
   onCardClick(): void {
     this.cardClick.emit(this.event());
+  }
+
+  onFamilyClick(e: Event): void {
+    e.stopPropagation();
+    this.familyClick.emit(this.event());
   }
 }

@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import shabbatotRouter from './routes/shabbatot';
 import historyRouter from './routes/history';
+import familyEventsRouter from './routes/familyEvents';
 import { errorHandler } from './middleware/errorHandler';
 import { initCurrentHebrewYear, refreshParashaMetadata } from './services/hebrewYearService';
 import { archivePassedShabbatot } from './services/historyService';
@@ -18,6 +19,7 @@ app.use(express.json());
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/api/shabbatot', shabbatotRouter);
 app.use('/api/history', historyRouter);
+app.use('/api/family-events', familyEventsRouter);
 
 // ── Static frontend (production single-service) ───
 // Angular build output. dist/app.js → ../../frontend/dist/frontend/browser

@@ -29,4 +29,16 @@
     </div>
 
   </div>
+
+  <button class="family-btn" type="button"
+          [class.has-events]="familyCount() > 0"
+          (click)="onFamilyClick($event)"
+          (keydown.enter)="$event.stopPropagation()"
+          aria-label="אירועים משפחתיים">
+    <span class="family-emoji">🎉</span>
+    <span class="family-label">אירועים</span>
+    @if (familyCount() > 0) {
+      <span class="family-count">{{ familyCount() }}</span>
+    }
+  </button>
 </div>

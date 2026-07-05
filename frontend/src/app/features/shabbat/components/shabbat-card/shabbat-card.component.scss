@@ -98,6 +98,7 @@
   margin: 0 0 8px;
 }
 
+// Bottom text lines reserve space on the left for the family button
 .card-option-selected {
   font-size: 13px;
   font-weight: 600;
@@ -118,6 +119,59 @@
   color: #64748b;
   font-style: italic;
   margin: 0;
+}
+
+// Family events button — its own footer row below the card body,
+// aligned to the card's left edge (RTL end)
+.family-btn {
+  display: flex;
+  width: fit-content;
+  margin-block: -4px 12px;
+  margin-inline: auto 14px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
+
+  &:hover {
+    background: rgba(212, 168, 67, 0.1);
+    border-color: rgba(212, 168, 67, 0.5);
+    color: var(--gold-bright);
+    box-shadow: 0 0 18px -6px rgba(212, 168, 67, 0.5);
+  }
+
+  &.has-events {
+    border-color: rgba(212, 168, 67, 0.4);
+    background: rgba(212, 168, 67, 0.08);
+    color: var(--gold-bright);
+  }
+}
+
+.family-emoji {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.family-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+  color: #0a0e1a;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(212, 168, 67, 0.5);
 }
 
 .card-arrow {
@@ -174,4 +228,7 @@
   .card-option-pending,
   .card-option-hint { font-size: 12px; }
   .card-arrow mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  .family-btn { padding: 5px 10px; gap: 5px; margin-block: -2px 10px; margin-inline: auto 12px; font-size: 11px; }
+  .family-emoji { font-size: 14px; }
 }

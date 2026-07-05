@@ -7,9 +7,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
 import { ShabbatService } from '../../../../core/services/shabbat.service';
+import { FamilyEventsService } from '../../../../core/services/family-events.service';
 import { ShabbatCardComponent } from '../../components/shabbat-card/shabbat-card.component';
 import { ShabbatOptionsComponent } from '../../dialogs/shabbat-options/shabbat-options.component';
 import { HistoryDialogComponent } from '../../dialogs/history/history-dialog.component';
+import { FamilyEventsDialogComponent } from '../../dialogs/family-events/family-events-dialog.component';
 
 const PAGE_SIZE = 5;
 
@@ -28,9 +30,11 @@ const PAGE_SIZE = 5;
 })
 export class HomeComponent implements OnInit {
   private service = inject(ShabbatService);
+  private familyService = inject(FamilyEventsService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
+  familyCounts = signal<Record<string, number>>({});
   private allEvents = signal<ShabbatEvent[]>([]);
   private pageStart = signal(0);
   private visibleCount = signal(PAGE_SIZE);
@@ -58,6 +62,7 @@ export class HomeComponent implements OnInit {
         this.pageStart.set(this.findTodayIndex(data));
         this.visibleCount.set(PAGE_SIZE);
         this.loading.set(false);
+        this.loadFamilyCounts(data);
       },
       error: () => {
         this.error.set('לא ניתן לטעון נתונים — ודא שהשרת פועל.');
@@ -97,6 +102,25 @@ export class HomeComponent implements OnInit {
     );
     this.service.update(eventId, patch).subscribe({
       error: () => this.snackBar.open('שגיאה בשמירה', 'סגור', { duration: 2500 }),
+    });
+  }
+
+  private loadFamilyCounts(events: ShabbatEvent[]): void {
+    if (!events.length) return;
+    this.familyService.getCounts(events.map(e => e.gregorianDate)).subscribe({
+      next: counts => this.familyCounts.set(counts),
+      error: () => {}, // counts are decorative; the dialog still works without them
+    });
+  }
+
+  openFamilyEvents(event: ShabbatEvent): void {
+    const ref = this.dialog.open(FamilyEventsDialogComponent, {
+      data: { event },
+      width: '500px',
+      maxWidth: '95vw',
+    });
+    ref.afterClosed().subscribe((result: { changed?: boolean } | null) => {
+      if (result?.changed) this.loadFamilyCounts(this.allEvents());
     });
   }
 

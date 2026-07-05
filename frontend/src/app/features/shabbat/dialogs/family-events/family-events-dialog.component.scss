@@ -1,0 +1,498 @@
+.btn-slate {
+  background: linear-gradient(135deg, #a37828, #f0ce7d) !important;
+  color: #0a0e1a !important;
+  font-weight: 700 !important;
+  border-radius: 999px !important;
+  padding: 0 22px !important;
+  box-shadow: 0 4px 22px -6px rgba(212, 168, 67, 0.65) !important;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px 4px;
+}
+
+.title-block {
+  text-align: right;
+}
+
+.close-btn {
+  flex-shrink: 0;
+  margin: -4px 0 0 -8px;
+  color: var(--text-secondary) !important;
+}
+
+.fe-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #f0ce7d, #d4a843);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px rgba(212, 168, 67, 0.3));
+  margin: 0 0 2px;
+}
+
+.fe-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.dialog-content {
+  width: 460px;
+  max-width: 100%;
+  max-height: 62vh;
+  padding-top: 10px;
+}
+
+@media (max-width: 599px) {
+  .dialog-content {
+    width: 100%;
+    max-height: 75vh;
+  }
+}
+
+.loading-center {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 20px;
+  color: var(--text-secondary);
+
+  p { margin: 0; font-size: 14px; }
+}
+
+.empty-emoji {
+  font-size: 2.2rem;
+  filter: drop-shadow(0 0 12px rgba(240, 206, 125, 0.4));
+}
+
+.fe-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fe-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 13px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(212, 168, 67, 0.16);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background: rgba(212, 168, 67, 0.06);
+    border-color: rgba(212, 168, 67, 0.4);
+    box-shadow: 0 0 20px -8px rgba(212, 168, 67, 0.4);
+  }
+
+  &.anniversary {
+    border-color: rgba(244, 114, 182, 0.22);
+
+    &:hover {
+      background: rgba(244, 114, 182, 0.06);
+      border-color: rgba(244, 114, 182, 0.45);
+      box-shadow: 0 0 20px -8px rgba(244, 114, 182, 0.4);
+    }
+  }
+}
+
+.fe-emoji {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  background: rgba(212, 168, 67, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(212, 168, 67, 0.25);
+
+  .anniversary & {
+    background: rgba(244, 114, 182, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(244, 114, 182, 0.28);
+  }
+}
+
+.fe-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fe-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.fe-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fe-type {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(212, 168, 67, 0.12);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  color: var(--gold-bright);
+  white-space: nowrap;
+
+  &.anniversary {
+    background: rgba(244, 114, 182, 0.1);
+    border-color: rgba(244, 114, 182, 0.35);
+    color: #f9a8d4;
+  }
+}
+
+.fe-hebdate {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.fe-occurs {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold-bright);
+}
+
+.fe-years {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  min-width: 46px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(212, 168, 67, 0.1);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.3;
+
+  b {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gold-bright);
+  }
+}
+
+// ── Row actions (edit / delete) ───────────
+.fe-actions {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fe-act {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+
+  mat-icon { font-size: 15px; width: 15px; height: 15px; }
+
+  &:active { transform: scale(0.9); }
+
+  &.edit {
+    background: rgba(212, 168, 67, 0.1);
+    color: var(--gold-bright);
+
+    &:hover {
+      background: rgba(212, 168, 67, 0.22);
+      box-shadow: 0 0 12px -4px rgba(212, 168, 67, 0.6);
+    }
+  }
+
+  &.del {
+    background: rgba(239, 68, 68, 0.1);
+    color: #f87171;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.2);
+      box-shadow: 0 0 12px -4px rgba(239, 68, 68, 0.6);
+    }
+  }
+}
+
+// ── Inline delete confirmation strip ──────
+.fe-confirm {
+  flex-basis: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.09);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.fe-confirm-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fca5a5;
+}
+
+.fe-confirm-del {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #dc2626, #f87171);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 2px 14px -4px rgba(239, 68, 68, 0.6);
+  transition: transform 0.1s;
+
+  &:active { transform: scale(0.95); }
+}
+
+.fe-confirm-cancel {
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(255, 255, 255, 0.06); }
+}
+
+// ── Inline add/edit form ──────────────────
+.fe-form {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(212, 168, 67, 0.05);
+  border: 1px solid rgba(212, 168, 67, 0.25);
+  box-shadow: 0 0 28px -12px rgba(212, 168, 67, 0.4);
+}
+
+.fe-form-title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.03em;
+}
+
+.fe-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'Heebo', sans-serif;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  outline: none;
+  direction: rtl;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: rgba(212, 168, 67, 0.7);
+    box-shadow: var(--ring);
+  }
+
+  &::placeholder { color: #5b6578; }
+}
+
+.fe-type-toggle {
+  display: flex;
+  gap: 6px;
+}
+
+.fe-type-input {
+  padding: 9px 14px;
+  font-size: 13px;
+
+  &.custom-active {
+    border-color: rgba(212, 168, 67, 0.6);
+    background: rgba(212, 168, 67, 0.07);
+  }
+}
+
+.fe-type-btn {
+  flex: 1;
+  padding: 9px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.active {
+    background: linear-gradient(135deg, var(--gold-deep), var(--gold-bright));
+    border-color: transparent;
+    color: #0a0e1a;
+    box-shadow: 0 2px 14px -3px rgba(212, 168, 67, 0.6);
+  }
+}
+
+.fe-date-row {
+  display: flex;
+  gap: 8px;
+}
+
+.fe-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fe-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.fe-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: 'Heebo', sans-serif;
+  background: #131829;
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: rgba(212, 168, 67, 0.7);
+    box-shadow: var(--ring);
+  }
+}
+
+.fe-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.fe-save {
+  flex: 1;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #a37828, #f0ce7d);
+  color: #0a0e1a;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 18px -6px rgba(212, 168, 67, 0.6);
+  transition: opacity 0.15s, transform 0.1s;
+
+  &:disabled { opacity: 0.45; cursor: default; }
+  &:not(:disabled):active { transform: scale(0.98); }
+}
+
+.fe-cancel {
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover { background: rgba(255, 255, 255, 0.06); }
+}
+
+// ── Dialog footer ─────────────────────────
+.fe-dialog-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fe-spacer {
+  flex: 1;
+}
+
+.fe-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 16px;
+  border: 1px solid rgba(212, 168, 67, 0.4);
+  border-radius: 999px;
+  background: rgba(212, 168, 67, 0.08);
+  color: var(--gold-bright);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+
+  &:hover {
+    background: rgba(212, 168, 67, 0.15);
+    border-color: rgba(212, 168, 67, 0.7);
+    box-shadow: 0 0 18px -6px rgba(212, 168, 67, 0.5);
+  }
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+// ── Mobile ────────────────────────────────
+@media (max-width: 480px) {
+  .fe-row { padding: 11px 12px; gap: 8px; }
+  .fe-emoji { width: 38px; height: 38px; font-size: 18px; border-radius: 12px; }
+  .fe-name { font-size: 14px; }
+  .fe-years { min-width: 40px; padding: 4px 7px; }
+  .fe-act { width: 26px; height: 26px; }
+}

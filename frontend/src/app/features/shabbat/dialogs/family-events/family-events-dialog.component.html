@@ -1,0 +1,146 @@
+<div class="dialog-header" mat-dialog-title>
+  <div class="title-block">
+    <h2 class="fe-title">🎉 אירועים משפחתיים</h2>
+    <p class="fe-subtitle">בשבוע של {{ event.parashaHe || event.parasha }} · {{ event.hebrewDate }}</p>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="close()" aria-label="סגור">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+
+  @if (loading()) {
+    <div class="loading-center">
+      <mat-progress-spinner mode="indeterminate" diameter="36" />
+    </div>
+  } @else if (events().length === 0 && !formOpen()) {
+    <div class="empty-state">
+      <span class="empty-emoji">🕊️</span>
+      <p>אין אירועים משפחתיים בשבוע הקרוב</p>
+    </div>
+  } @else {
+    <div class="fe-list">
+      @for (ev of events(); track ev.id) {
+        <div class="fe-row" [class.anniversary]="isAnniversary(ev)">
+          <span class="fe-emoji">{{ ev.emoji }}</span>
+
+          <div class="fe-main">
+            <div class="fe-name">{{ ev.name }}</div>
+            <div class="fe-meta">
+              <span class="fe-type" [class.anniversary]="isAnniversary(ev)">
+                {{ isAnniversary(ev) ? '💍' : '🎂' }} {{ ev.type }}
+              </span>
+              <span class="fe-hebdate">{{ ev.date }}</span>
+            </div>
+            <div class="fe-occurs">{{ formatOccurs(ev.occursOn) }}</div>
+          </div>
+
+          @if (ev.years) {
+            <span class="fe-years">
+              <b>{{ ev.years }}</b>
+              שנים
+            </span>
+          }
+
+          <div class="fe-actions">
+            <button class="fe-act edit" (click)="openEdit(ev)" aria-label="ערוך אירוע">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button class="fe-act del" (click)="requestDelete(ev)" aria-label="מחק אירוע">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          @if (pendingDeleteId() === ev.id) {
+            <div class="fe-confirm">
+              <span class="fe-confirm-text">למחוק את האירוע?</span>
+              <button type="button" class="fe-confirm-del" (click)="confirmDelete()">מחק</button>
+              <button type="button" class="fe-confirm-cancel" (click)="cancelDelete()">ביטול</button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Inline add/edit form -->
+  @if (formOpen()) {
+    <div class="fe-form">
+      <p class="fe-form-title">{{ editingId() ? '✏️ עריכת אירוע' : '➕ אירוע חדש' }}</p>
+
+      <input
+        type="text"
+        class="fe-input"
+        placeholder="שם (לדוגמה: רחלי חיימוביץ)"
+        [value]="fName()"
+        (input)="onNameInput($event)"
+      />
+
+      <div class="fe-type-toggle">
+        <button type="button" class="fe-type-btn"
+                [class.active]="fType() === 'יום הולדת'"
+                (click)="fType.set('יום הולדת')">🎂 יום הולדת</button>
+        <button type="button" class="fe-type-btn"
+                [class.active]="fType() === 'יום נישואים'"
+                (click)="fType.set('יום נישואים')">💍 יום נישואים</button>
+      </div>
+
+      <input
+        type="text"
+        class="fe-input fe-type-input"
+        [class.custom-active]="customTypeValue()"
+        placeholder="או סוג אחר... (אזכרה, בר מצווה, סיום)"
+        [value]="customTypeValue()"
+        (input)="onTypeInput($event)"
+      />
+
+      <div class="fe-date-row">
+        <label class="fe-field">
+          <span class="fe-label">יום</span>
+          <select class="fe-select" [value]="fDay()" (change)="onDayChange($event)">
+            @for (d of days; track $index) {
+              <option [value]="$index + 1" [selected]="fDay() === $index + 1">{{ d }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="fe-field">
+          <span class="fe-label">חודש</span>
+          <select class="fe-select" [value]="fMonth()" (change)="onMonthChange($event)">
+            @for (m of months; track m) {
+              <option [value]="m" [selected]="fMonth() === m">{{ m }}</option>
+            }
+          </select>
+        </label>
+      </div>
+
+      <input
+        type="text"
+        class="fe-input"
+        placeholder="תאריך לועזי מקורי — לא חובה (31.12.1990)"
+        [value]="fGreg()"
+        (input)="onGregInput($event)"
+      />
+
+      <div class="fe-form-actions">
+        <button type="button" class="fe-save" [disabled]="!canSave()" (click)="saveForm()">
+          {{ saving() ? 'שומר…' : 'שמור' }}
+        </button>
+        <button type="button" class="fe-cancel" (click)="cancelForm()">ביטול</button>
+      </div>
+    </div>
+  }
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="fe-dialog-actions">
+  @if (!formOpen()) {
+    <button type="button" class="fe-add-btn" (click)="openAdd()">
+      <mat-icon>add</mat-icon>
+      הוסף אירוע
+    </button>
+  }
+  <span class="fe-spacer"></span>
+  <button mat-flat-button class="btn-slate" (click)="close()">סגור</button>
+</mat-dialog-actions>
