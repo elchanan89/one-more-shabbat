@@ -1,4 +1,20 @@
+// ══════════════════════════════════════════════════════════════
+// Theme tokens
+//   Dark  — "Midnight Shabbat" (default)
+//   Light — "Daylight Shabbat" via [data-theme="light"] on <html>
+// Channel triplets (--*-rgb) feed rgba(var(--x-rgb), a) so the
+// same alpha recipes re-tint per theme.
+// ══════════════════════════════════════════════════════════════
+
 :root {
+  color-scheme: dark;
+
+  // Channels
+  --gold-rgb:        212, 168, 67;   // #d4a843
+  --gold-bright-rgb: 240, 206, 125;  // #f0ce7d
+  --ink-rgb:         255, 255, 255;  // glass surfaces / hairlines
+  --success-rgb:     74, 222, 128;   // #4ade80
+
   --gold:          #d4a843;
   --gold-bright:   #f0ce7d;
   --gold-deep:     #a37828;
@@ -8,19 +24,54 @@
 
   --bg:            #0a0e1a;
   --bg-subtle:     #080b14;
-  --surface:       rgba(255, 255, 255, 0.045);
-  --surface-hover: rgba(255, 255, 255, 0.08);
-  --glass-border:  rgba(212, 168, 67, 0.18);
+  --surface:       rgba(var(--ink-rgb), 0.045);
+  --surface-hover: rgba(var(--ink-rgb), 0.08);
+  --glass-border:  rgba(var(--gold-rgb), 0.18);
   --primary:       #d4a843;
   --primary-dark:  #f0ce7d;
   --text-primary:  #f1f5f9;
   --text-secondary:#8b96ab;
-  --border:        rgba(255, 255, 255, 0.08);
-  --card-shadow:   0 8px 32px -10px rgba(0, 0, 0, 0.6);
-  --glow-gold:     0 0 28px -6px rgba(212, 168, 67, 0.45);
+  --text-muted:    #64748b;
+  --text-placeholder: #5b6578;
+  --ink-on-gold:   #0a0e1a;
+  --border:        rgba(var(--ink-rgb), 0.08);
   --radius-card:   20px;
   --radius-pill:   999px;
-  --ring:          0 0 0 3px rgba(212, 168, 67, 0.22);
+  --ring:          0 0 0 3px rgba(var(--gold-rgb), 0.22);
+
+  // Status colors
+  --success:       #4ade80;
+  --danger:        #f87171;
+  --danger-soft:   #fca5a5;
+  --pink:          #f9a8d4;
+  --badge-bg:      #0f172a;
+  --field-bg:      #131829;
+
+  // Shadows & glows
+  --card-shadow:        0 8px 32px -10px rgba(0, 0, 0, 0.6);
+  --card-hover-shadow:  0 18px 44px -14px rgba(0, 0, 0, 0.75),
+                        0 0 36px -8px rgba(var(--gold-rgb), 0.4);
+  --glow-gold:          0 0 28px -6px rgba(var(--gold-rgb), 0.45);
+  --header-shadow:      0 10px 40px -14px rgba(0, 0, 0, 0.8);
+  --dialog-shadow:      0 32px 90px -20px rgba(0, 0, 0, 0.85),
+                        0 0 70px -24px rgba(var(--gold-rgb), 0.35);
+
+  // Composite surfaces
+  --header-glass:   rgba(8, 11, 20, 0.55);
+  --dialog-surface: linear-gradient(165deg, rgba(22, 27, 44, 0.97), rgba(9, 12, 22, 0.99));
+  --backdrop:       rgba(3, 5, 10, 0.6);
+
+  // Gold gradients
+  --title-gradient:   linear-gradient(135deg, #a37828 0%, #f0ce7d 45%, #d4a843 70%, #f7e3ae 100%);
+  --heading-gradient: linear-gradient(135deg, #f0ce7d, #d4a843);
+  --btn-gold:         linear-gradient(135deg, #a37828, #f0ce7d);
+  --btn-gold-active:  linear-gradient(135deg, var(--gold-deep), var(--gold-bright));
+
+  // Ambient auras behind the app
+  --aura-gold:   rgba(212, 168, 67, 0.13);
+  --aura-indigo: rgba(99, 102, 241, 0.10);
+
+  --selection-text: #fff;
 
   // Category A: regular/family
   --cat-a-bg:  rgba(56, 189, 248, 0.14);
@@ -31,9 +82,70 @@
   --cat-b-icon:#fdba74;
 
   // Timeline
-  --rail-color:   linear-gradient(to bottom, rgba(212, 168, 67, 0.75), rgba(212, 168, 67, 0.18));
+  --rail-color:   linear-gradient(to bottom, rgba(var(--gold-rgb), 0.75), rgba(var(--gold-rgb), 0.18));
   --dot-active:   #f0ce7d;
-  --dot-inactive: rgba(212, 168, 67, 0.45);
+  --dot-inactive: rgba(var(--gold-rgb), 0.45);
+}
+
+// ── Daylight Shabbat ──────────────────────
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --gold-rgb:        164, 122, 28;   // #a47a1c — deep gold reads on cream
+  --gold-bright-rgb: 138, 98, 16;    // #8a6210
+  --ink-rgb:         30, 37, 50;     // dark-slate glass tints
+  --success-rgb:     22, 163, 74;    // #16a34a
+
+  --gold:          #a47a1c;
+  --gold-bright:   #8a6210;
+  --gold-deep:     #8a6210;
+  --gold-light:    #c79a2d;
+  --slate:         #475569;
+  --near-black:    #f2eee3;
+
+  --bg:            #f7f4ec;
+  --bg-subtle:     #f2eee3;
+  --primary:       #a47a1c;
+  --primary-dark:  #8a6210;
+  --text-primary:  #1e2532;
+  --text-secondary:#5d6675;
+  --text-muted:    #6b7280;
+  --text-placeholder: #9aa0ab;
+  --ink-on-gold:   #fffdf5;
+
+  --success:       #16a34a;
+  --danger:        #dc2626;
+  --danger-soft:   #b91c1c;
+  --pink:          #be185d;
+  --badge-bg:      #ffffff;
+  --field-bg:      #ffffff;
+
+  --card-shadow:        0 8px 28px -12px rgba(120, 100, 50, 0.28);
+  --card-hover-shadow:  0 18px 40px -16px rgba(120, 100, 50, 0.38),
+                        0 0 32px -10px rgba(var(--gold-rgb), 0.3);
+  --glow-gold:          0 0 24px -8px rgba(var(--gold-rgb), 0.4);
+  --header-shadow:      0 10px 30px -18px rgba(120, 100, 50, 0.3);
+  --dialog-shadow:      0 32px 80px -24px rgba(90, 75, 40, 0.45),
+                        0 0 60px -28px rgba(var(--gold-rgb), 0.3);
+
+  --header-glass:   rgba(251, 248, 241, 0.72);
+  --dialog-surface: linear-gradient(165deg, #fffdf7, #f7f2e7);
+  --backdrop:       rgba(70, 58, 32, 0.35);
+
+  --title-gradient:   linear-gradient(135deg, #8a6210 0%, #c79a2d 45%, #a67c1a 70%, #d3ab4e 100%);
+  --heading-gradient: linear-gradient(135deg, #a67c1a, #8a6210);
+  --btn-gold:         linear-gradient(135deg, #9a7115, #c2922a);
+  --btn-gold-active:  linear-gradient(135deg, #9a7115, #c2922a);
+
+  --aura-gold:   rgba(164, 122, 28, 0.10);
+  --aura-indigo: rgba(99, 102, 241, 0.06);
+
+  --selection-text: #1e2532;
+
+  --cat-a-icon: #0369a1;
+  --cat-b-icon: #c2410c;
+
+  --dot-active: #a47a1c;
 }
 
 #stars-canvas {
@@ -59,8 +171,8 @@ app-root {
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(1000px 480px at 82% -8%, rgba(212, 168, 67, 0.13), transparent 62%),
-      radial-gradient(820px 540px at 10% 110%, rgba(99, 102, 241, 0.10), transparent 60%);
+      radial-gradient(1000px 480px at 82% -8%, var(--aura-gold), transparent 62%),
+      radial-gradient(820px 540px at 10% 110%, var(--aura-indigo), transparent 60%);
   }
 }
 
@@ -86,11 +198,12 @@ body {
   background: var(--bg-subtle);
   direction: rtl;
   color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
-  background: rgba(212, 168, 67, 0.4);
-  color: #fff;
+  background: rgba(var(--gold-rgb), 0.4);
+  color: var(--selection-text);
 }
 
 // Material typography override
@@ -100,7 +213,7 @@ body {
   font-family: 'Montserrat', 'Heebo', sans-serif !important;
 }
 
-// ── Premium dark dialog shell ─────────────────
+// ── Premium dialog shell ──────────────────
 .mat-mdc-dialog-container {
   --mdc-dialog-container-shape: 28px;
   --mdc-dialog-supporting-text-color: var(--text-primary);
@@ -108,16 +221,14 @@ body {
 }
 
 .cdk-overlay-pane .mat-mdc-dialog-surface {
-  background: linear-gradient(165deg, rgba(22, 27, 44, 0.97), rgba(9, 12, 22, 0.99)) !important;
-  border: 1px solid rgba(212, 168, 67, 0.16);
-  box-shadow:
-    0 32px 90px -20px rgba(0, 0, 0, 0.85),
-    0 0 70px -24px rgba(212, 168, 67, 0.35) !important;
+  background: var(--dialog-surface) !important;
+  border: 1px solid rgba(var(--gold-rgb), 0.16);
+  box-shadow: var(--dialog-shadow) !important;
   color: var(--text-primary);
 }
 
 .cdk-overlay-dark-backdrop {
-  background: rgba(3, 5, 10, 0.6);
+  background: var(--backdrop);
   backdrop-filter: blur(4px);
 }
 
@@ -144,5 +255,5 @@ body {
 }
 
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: rgba(212, 168, 67, 0.35); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(212, 168, 67, 0.6); }
+::-webkit-scrollbar-thumb { background: rgba(var(--gold-rgb), 0.35); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(var(--gold-rgb), 0.6); }

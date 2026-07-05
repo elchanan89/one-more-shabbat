@@ -5,6 +5,19 @@
   <title>עוד שבת</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Apply the saved theme before first paint to avoid a flash of the wrong
+    // theme. ?theme=light|dark overrides and persists (dev/testing hook).
+    try {
+      var themeParam = new URLSearchParams(location.search).get('theme');
+      if (themeParam === 'light' || themeParam === 'dark') {
+        localStorage.setItem('odshabat-theme', themeParam);
+      }
+      if (localStorage.getItem('odshabat-theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    } catch (e) { /* storage unavailable — stay on dark default */ }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -45,8 +58,18 @@
       opacity: Math.random() * 0.8 + 0.2,
     }));
 
+    // Midnight: bright gold stars on near-black. Daylight: faint deep-gold
+    // dust on cream. Theme is re-read every frame so a toggle fades over
+    // naturally as the trail fill washes to the new background.
+    const STARS_THEME = {
+      dark:  { trail: 'rgba(8, 11, 20, 0.3)',    star: '#f0ce7d', dim: 1 },
+      light: { trail: 'rgba(247, 244, 236, 0.3)', star: '#b08a2a', dim: 0.5 },
+    };
+
     function animate() {
-      ctx.fillStyle = 'rgba(8, 11, 20, 0.3)';
+      const mode = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const t = STARS_THEME[mode];
+      ctx.fillStyle = t.trail;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       for (const star of stars) {
@@ -56,8 +79,8 @@
           star.x = Math.random() * canvas.width;
         }
         ctx.save();
-        ctx.globalAlpha = star.opacity;
-        ctx.fillStyle = '#f0ce7d';
+        ctx.globalAlpha = star.opacity * t.dim;
+        ctx.fillStyle = t.star;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
         ctx.fill();

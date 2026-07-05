@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
 import { ShabbatService } from '../../../../core/services/shabbat.service';
+import { ThemeService } from '../../../../core/services/theme.service';
 import { FamilyEventsService } from '../../../../core/services/family-events.service';
 import { ShabbatCardComponent } from '../../components/shabbat-card/shabbat-card.component';
 import { ShabbatOptionsComponent } from '../../dialogs/shabbat-options/shabbat-options.component';
@@ -30,6 +31,7 @@ const PAGE_SIZE = 5;
 })
 export class HomeComponent implements OnInit {
   private service = inject(ShabbatService);
+  theme = inject(ThemeService);
   private familyService = inject(FamilyEventsService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);

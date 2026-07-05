@@ -1,5 +1,14 @@
 <!-- ═══ App Header ═══ -->
 <header class="app-header">
+  <button
+    class="theme-toggle"
+    type="button"
+    (click)="theme.toggle()"
+    [matTooltip]="theme.mode() === 'dark' ? 'מצב יום' : 'מצב לילה'"
+    [attr.aria-label]="theme.mode() === 'dark' ? 'מצב יום' : 'מצב לילה'"
+  >
+    <mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  </button>
   <div class="header-inner">
     <h1 class="app-title">
       <span class="title-candle">🕯️</span>

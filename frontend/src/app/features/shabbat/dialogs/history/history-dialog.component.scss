@@ -1,10 +1,10 @@
 .btn-slate {
-  background: linear-gradient(135deg, #a37828, #f0ce7d) !important;
-  color: #0a0e1a !important;
+  background: var(--btn-gold) !important;
+  color: var(--ink-on-gold) !important;
   font-weight: 700 !important;
   border-radius: 999px !important;
   padding: 0 22px !important;
-  box-shadow: 0 4px 22px -6px rgba(212, 168, 67, 0.65) !important;
+  box-shadow: 0 4px 22px -6px rgba(var(--gold-rgb), 0.65) !important;
 }
 
 .dialog-header {
@@ -29,11 +29,11 @@
   font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  background: linear-gradient(135deg, #f0ce7d, #d4a843);
+  background: var(--heading-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 14px rgba(212, 168, 67, 0.3));
+  filter: drop-shadow(0 0 14px rgba(var(--gold-rgb), 0.3));
   margin: 0 0 2px;
 }
 
@@ -81,14 +81,14 @@
   gap: 3px;
   padding: 13px 16px;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(var(--ink-rgb), 0.03);
+  border: 1px solid rgba(var(--ink-rgb), 0.06);
   transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
 
   &:hover {
-    background: rgba(212, 168, 67, 0.06);
-    border-color: rgba(212, 168, 67, 0.3);
-    box-shadow: 0 0 18px -8px rgba(212, 168, 67, 0.4);
+    background: rgba(var(--gold-rgb), 0.06);
+    border-color: rgba(var(--gold-rgb), 0.3);
+    box-shadow: 0 0 18px -8px rgba(var(--gold-rgb), 0.4);
   }
 }
 
