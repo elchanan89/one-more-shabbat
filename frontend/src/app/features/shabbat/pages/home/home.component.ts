@@ -13,6 +13,7 @@ import { ShabbatCardComponent } from '../../components/shabbat-card/shabbat-card
 import { ShabbatOptionsComponent } from '../../dialogs/shabbat-options/shabbat-options.component';
 import { HistoryDialogComponent } from '../../dialogs/history/history-dialog.component';
 import { FamilyEventsDialogComponent } from '../../dialogs/family-events/family-events-dialog.component';
+import { WeeklyEventsDialogComponent } from '../../dialogs/weekly-events/weekly-events-dialog.component';
 
 const PAGE_SIZE = 5;
 
@@ -65,6 +66,7 @@ export class HomeComponent implements OnInit {
         this.visibleCount.set(PAGE_SIZE);
         this.loading.set(false);
         this.loadFamilyCounts(data);
+        this.maybeShowWeeklyEvents();
       },
       error: () => {
         this.error.set('לא ניתן לטעון נתונים — ודא שהשרת פועל.');
@@ -112,6 +114,35 @@ export class HomeComponent implements OnInit {
     this.familyService.getCounts(events.map(e => e.gregorianDate)).subscribe({
       next: counts => this.familyCounts.set(counts),
       error: () => {}, // counts are decorative; the dialog still works without them
+    });
+  }
+
+  /**
+   * Announce this week's family events on every load. The week is owned by
+   * the most recent Shabbat (Saturday) on or before today; opens only when
+   * that week actually has events.
+   */
+  private maybeShowWeeklyEvents(): void {
+    const d = new Date();
+    d.setDate(d.getDate() - ((d.getDay() + 1) % 7)); // back to Saturday (getDay: Sat=6)
+    const ownerDate = [
+      d.getFullYear(),
+      String(d.getMonth() + 1).padStart(2, '0'),
+      String(d.getDate()).padStart(2, '0'),
+    ].join('-');
+
+    this.familyService.getWeek(ownerDate).subscribe({
+      next: events => {
+        // Never stack over a dialog the user already opened (slow responses)
+        if (!events.length || this.dialog.openDialogs.length > 0) return;
+        const parashaHe = this.allEvents().find(e => e.gregorianDate === ownerDate)?.parashaHe;
+        this.dialog.open(WeeklyEventsDialogComponent, {
+          data: { events, parashaHe },
+          width: '480px',
+          maxWidth: '95vw',
+        });
+      },
+      error: () => {}, // announcement is decorative; never block the page on it
     });
   }
 

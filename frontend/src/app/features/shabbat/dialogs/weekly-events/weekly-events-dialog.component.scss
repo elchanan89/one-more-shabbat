@@ -1,0 +1,204 @@
+// Gold gradient CTA (shared .btn-slate look used across dialogs)
+.btn-slate {
+  background: var(--btn-gold) !important;
+  color: var(--ink-on-gold) !important;
+  font-weight: 700 !important;
+  border-radius: 999px !important;
+  padding: 0 22px !important;
+  box-shadow: 0 4px 22px -6px rgba(var(--gold-rgb), 0.65) !important;
+}
+
+.dialog-header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 4px;
+
+  // festive gold halo behind the title
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -30px 20% auto;
+    height: 110px;
+    pointer-events: none;
+    background: radial-gradient(60% 100% at 50% 0%, rgba(var(--gold-rgb), 0.18), transparent 75%);
+  }
+}
+
+.title-block {
+  text-align: right;
+}
+
+.close-btn {
+  flex-shrink: 0;
+  margin: -4px 0 0 -8px;
+  color: var(--text-secondary) !important;
+}
+
+.we-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: var(--heading-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 14px rgba(var(--gold-rgb), 0.3));
+  margin: 0 0 2px;
+}
+
+.we-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.dialog-content {
+  width: 460px;
+  max-width: 100%;
+  max-height: 62vh;
+  padding-top: 12px;
+}
+
+@media (max-width: 599px) {
+  .dialog-content {
+    width: 100%;
+    max-height: 75vh;
+  }
+}
+
+.we-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.we-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(var(--ink-rgb), 0.035);
+  border: 1px solid rgba(var(--gold-rgb), 0.18);
+
+  &.anniversary {
+    border-color: rgba(244, 114, 182, 0.25);
+  }
+}
+
+.we-emoji {
+  width: 50px;
+  height: 50px;
+  border-radius: 15px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  background: rgba(var(--gold-rgb), 0.12);
+  box-shadow: inset 0 0 0 1px rgba(var(--gold-rgb), 0.25);
+
+  .anniversary & {
+    background: rgba(244, 114, 182, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(244, 114, 182, 0.28);
+  }
+}
+
+.we-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.we-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.we-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.we-type {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(var(--gold-rgb), 0.12);
+  border: 1px solid rgba(var(--gold-rgb), 0.3);
+  color: var(--gold-bright);
+  white-space: nowrap;
+
+  &.anniversary {
+    background: rgba(244, 114, 182, 0.1);
+    border-color: rgba(244, 114, 182, 0.35);
+    color: var(--pink);
+  }
+}
+
+.we-hebdate {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.we-occurs {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold-bright);
+}
+
+.we-years {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 46px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background: rgba(var(--gold-rgb), 0.1);
+  border: 1px solid rgba(var(--gold-rgb), 0.25);
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 1.3;
+
+  b {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gold-bright);
+  }
+}
+
+.we-blessing {
+  margin: 16px 0 4px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-bright);
+  letter-spacing: 0.04em;
+}
+
+.we-actions {
+  display: flex;
+  align-items: center;
+}
+
+.we-spacer {
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .we-row { padding: 12px; gap: 10px; }
+  .we-emoji { width: 42px; height: 42px; font-size: 20px; border-radius: 12px; }
+  .we-name { font-size: 15px; }
+  .we-years { min-width: 40px; padding: 4px 7px; }
+}

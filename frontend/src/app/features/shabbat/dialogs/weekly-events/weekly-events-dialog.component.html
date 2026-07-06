@@ -1,0 +1,50 @@
+<div class="dialog-header" mat-dialog-title>
+  <div class="title-block">
+    <h2 class="we-title">🎉 חוגגים השבוע!</h2>
+    <p class="we-subtitle">
+      @if (data.parashaHe) {
+        אירועי המשפחה בשבוע של {{ data.parashaHe }}
+      } @else {
+        אירועי המשפחה השבוע
+      }
+    </p>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="close()" aria-label="סגור">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <div class="we-list">
+    @for (ev of data.events; track ev.id) {
+      <div class="we-row" [class.anniversary]="isAnniversary(ev)">
+        <span class="we-emoji">{{ ev.emoji }}</span>
+
+        <div class="we-main">
+          <div class="we-name">{{ ev.name }}</div>
+          <div class="we-meta">
+            <span class="we-type" [class.anniversary]="isAnniversary(ev)">
+              {{ isAnniversary(ev) ? '💍' : '🎂' }} {{ ev.type }}
+            </span>
+            <span class="we-hebdate">{{ ev.date }}</span>
+          </div>
+          <div class="we-occurs">{{ formatOccurs(ev.occursOn) }}</div>
+        </div>
+
+        @if (ev.years) {
+          <span class="we-years">
+            <b>{{ ev.years }}</b>
+            שנים
+          </span>
+        }
+      </div>
+    }
+  </div>
+
+  <p class="we-blessing">מזל טוב ושבוע טוב! ✨</p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="we-actions">
+  <span class="we-spacer"></span>
+  <button mat-flat-button class="btn-slate" (click)="close()">סגור</button>
+</mat-dialog-actions>
