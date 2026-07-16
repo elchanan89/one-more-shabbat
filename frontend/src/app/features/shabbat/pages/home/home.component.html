@@ -9,6 +9,17 @@
   >
     <mat-icon>{{ theme.mode() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
   </button>
+  <button
+    class="music-toggle"
+    [class.playing]="audio.state() === 'playing'"
+    [class.inviting]="audio.state() !== 'playing' && !audio.hasPlayed()"
+    type="button"
+    (click)="audio.toggle()"
+    [matTooltip]="audio.state() === 'playing' ? 'השתק מוזיקה' : 'נגן מוזיקה'"
+    [attr.aria-label]="audio.state() === 'playing' ? 'השתק מוזיקה' : 'נגן מוזיקה'"
+  >
+    <mat-icon>{{ audio.state() === 'playing' || !audio.hasPlayed() ? 'music_note' : 'music_off' }}</mat-icon>
+  </button>
   <div class="header-inner">
     <h1 class="app-title">
       <span class="title-candle">🕯️</span>

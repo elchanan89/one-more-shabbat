@@ -14,7 +14,8 @@
 }
 
 // Floating day/night switch — pinned to the header's inline-end (left in RTL)
-.theme-toggle {
+.theme-toggle,
+.music-toggle {
   position: absolute;
   top: 18px;
   inset-inline-end: 14px;
@@ -45,6 +46,55 @@
     font-size: 20px;
     width: 20px;
     height: 20px;
+  }
+}
+
+@keyframes music-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--gold-rgb), 0.45); }
+  50%      { box-shadow: 0 0 0 9px rgba(var(--gold-rgb), 0); }
+}
+
+// Expanding halo ring that says "tap me" before the song has ever played.
+@keyframes music-invite {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--gold-rgb), 0.55); }
+  70%  { box-shadow: 0 0 0 13px rgba(var(--gold-rgb), 0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--gold-rgb), 0); }
+}
+
+// Little "ring/shake" the music note gives every couple of seconds.
+@keyframes note-ring {
+  0%, 55%, 100% { transform: rotate(0); }
+  62%           { transform: rotate(-16deg); }
+  70%           { transform: rotate(13deg); }
+  78%           { transform: rotate(-9deg); }
+  86%           { transform: rotate(5deg); }
+  94%           { transform: rotate(0); }
+}
+
+// Welcome-song mute/play — mirrors the theme toggle on the opposite corner
+// (inline-start = right in RTL). Pulses gold while playing so the mute control
+// is unmistakable; before it has played, it invites a tap with a halo + wiggle.
+.music-toggle {
+  inset-inline-end: auto;
+  inset-inline-start: 14px;
+
+  &.playing {
+    border-color: rgba(var(--gold-rgb), 0.7);
+    animation: music-pulse 2s ease-out infinite;
+  }
+
+  &.inviting {
+    border-color: rgba(var(--gold-rgb), 0.85);
+    color: var(--gold-bright);
+    background: rgba(var(--gold-rgb), 0.12);
+    animation: music-invite 2.2s ease-out infinite;
+
+    mat-icon {
+      animation: note-ring 2.2s ease-in-out infinite;
+    }
+
+    // Pause the nudge while the user is aiming at it
+    &:hover { animation-play-state: paused; }
   }
 }
 
@@ -406,12 +456,17 @@
   .main { padding: 0 12px 72px; }
 
   .header-inner { padding: 16px 12px 14px; }
-  .theme-toggle {
+  .theme-toggle,
+  .music-toggle {
     top: 14px;
     inset-inline-end: 10px;
     width: 36px;
     height: 36px;
     mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+  .music-toggle {
+    inset-inline-end: auto;
+    inset-inline-start: 10px;
   }
   .title-candle { font-size: 20px; }
   .title-rule { margin-top: 8px; }

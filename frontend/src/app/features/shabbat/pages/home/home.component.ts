@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
 import { ShabbatService } from '../../../../core/services/shabbat.service';
 import { ThemeService } from '../../../../core/services/theme.service';
+import { AudioService } from '../../../../core/services/audio.service';
 import { FamilyEventsService } from '../../../../core/services/family-events.service';
 import { ShabbatCardComponent } from '../../components/shabbat-card/shabbat-card.component';
 import { ShabbatOptionsComponent } from '../../dialogs/shabbat-options/shabbat-options.component';
@@ -33,9 +34,26 @@ const PAGE_SIZE = 5;
 export class HomeComponent implements OnInit {
   private service = inject(ShabbatService);
   theme = inject(ThemeService);
+  audio = inject(AudioService);
   private familyService = inject(FamilyEventsService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+
+  private musicHintShown = false;
+
+  constructor() {
+    this.audio.init();
+    // The song starts on the visitor's first tap — surface a clear, labeled
+    // mute action the moment sound begins (once per visit).
+    effect(() => {
+      if (this.audio.state() !== 'playing' || this.musicHintShown) return;
+      this.musicHintShown = true;
+      this.snackBar
+        .open('🎵 מתנגנת מוזיקה', 'השתק', { duration: 5000 })
+        .onAction()
+        .subscribe(() => this.audio.toggle());
+    });
+  }
 
   familyCounts = signal<Record<string, number>>({});
   private allEvents = signal<ShabbatEvent[]>([]);
