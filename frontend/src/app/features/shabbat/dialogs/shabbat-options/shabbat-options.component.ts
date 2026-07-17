@@ -2,9 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { getSelectedIds, ShabbatEvent, ShabbatOption } from '../../../../core/models/shabbat.model';
-
-const DEFAULT_OPTION: ShabbatOption = { id: '__default__', text: 'נשארים בבית' };
+import { DEFAULT_OPTION, getSelectedIds, ShabbatEvent, ShabbatOption } from '../../../../core/models/shabbat.model';
 
 type Mode = 'family' | 'parents';
 
@@ -65,7 +63,10 @@ export class ShabbatOptionsComponent {
       const updatedOptions = text
         ? [...this.localOptions(), { id: `opt_${Date.now()}`, text }]
         : this.localOptions();
-      this.dialogRef.close({ patch: { shabbatOptions: updatedOptions } });
+      this.dialogRef.close({
+        patch: { shabbatOptions: updatedOptions },
+        addedText: text || undefined,
+      });
     } else {
       // Persist multi-select; clear the legacy field so it doesn't shadow it.
       this.dialogRef.close({

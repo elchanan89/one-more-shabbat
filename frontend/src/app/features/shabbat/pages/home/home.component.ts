@@ -10,11 +10,13 @@ import { ShabbatService } from '../../../../core/services/shabbat.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { AudioService } from '../../../../core/services/audio.service';
 import { FamilyEventsService } from '../../../../core/services/family-events.service';
+import { WhatsappShareService } from '../../../../core/services/whatsapp-share.service';
 import { ShabbatCardComponent } from '../../components/shabbat-card/shabbat-card.component';
 import { ShabbatOptionsComponent } from '../../dialogs/shabbat-options/shabbat-options.component';
 import { HistoryDialogComponent } from '../../dialogs/history/history-dialog.component';
 import { FamilyEventsDialogComponent } from '../../dialogs/family-events/family-events-dialog.component';
 import { WeeklyEventsDialogComponent } from '../../dialogs/weekly-events/weekly-events-dialog.component';
+import { ShareKind, ShareWhatsappDialogComponent } from '../../dialogs/share-whatsapp/share-whatsapp-dialog.component';
 
 const PAGE_SIZE = 5;
 
@@ -36,6 +38,7 @@ export class HomeComponent implements OnInit {
   theme = inject(ThemeService);
   audio = inject(AudioService);
   private familyService = inject(FamilyEventsService);
+  private whatsapp = inject(WhatsappShareService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
 
@@ -113,8 +116,47 @@ export class HomeComponent implements OnInit {
       width: '480px',
       maxWidth: '95vw',
     });
-    ref.afterClosed().subscribe((result: { patch: Partial<ShabbatEvent> } | null) => {
-      if (result?.patch) this.onSaveOptions(event.id, result.patch);
+    ref.afterClosed().subscribe(
+      (result: { patch: Partial<ShabbatEvent>; addedText?: string } | null) => {
+        if (!result?.patch) return;
+        this.onSaveOptions(event.id, result.patch);
+        this.offerShare(event.id, result);
+      }
+    );
+  }
+
+  /**
+   * Prompt to announce the change in the family group. Only real news gets a
+   * prompt: removing an option, saving an empty input, or resetting the
+   * choice are all no-ops here.
+   */
+  private offerShare(
+    eventId: string,
+    result: { patch: Partial<ShabbatEvent>; addedText?: string }
+  ): void {
+    if (!this.whatsapp.isMobileView()) return;
+
+    // Read back the merged event — onSaveOptions has already applied the patch.
+    const ev = this.allEvents().find(e => e.id === eventId);
+    if (!ev) return;
+
+    let kind: ShareKind;
+    let message: string;
+    if (result.addedText) {
+      kind = 'offer';
+      message = this.whatsapp.buildOfferMessage(ev, result.addedText);
+    } else if (result.patch.selectedOptionIds?.length) {
+      kind = 'choice';
+      message = this.whatsapp.buildChoiceMessage(ev);
+    } else {
+      return;
+    }
+
+    // The dialog opens WhatsApp itself, from inside the click.
+    this.dialog.open(ShareWhatsappDialogComponent, {
+      data: { kind, message },
+      width: '420px',
+      maxWidth: '95vw',
     });
   }
 

@@ -1,0 +1,42 @@
+<div class="dialog-header" mat-dialog-title>
+  <div class="title-block">
+    <h2 class="sw-title">
+      {{ isOffer ? '🎉 כל הכבוד!' : '🌟 נהדר!' }}
+    </h2>
+  </div>
+  <button mat-icon-button class="close-btn" (click)="cancel()" aria-label="סגור">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content class="dialog-content">
+  <p class="sw-body">
+    @if (isOffer) {
+      האם תרצי/ה לשלוח בוואטסאפ הקבוצתי שלנו
+      <b>"משפחה כי אין מה לעשות"</b>
+      ולידע את כולם?
+    } @else {
+      האם תרצו הורים יקרים ליידע את המשפחה בוואטסאפ על בחירתכם?
+      אם כן לחצו על כפתור שתף ובחרו בקבוצה
+      <b>"משפחה כי אין מה לעשות"</b>
+    }
+  </p>
+
+  @if (isOffer) {
+    <p class="sw-note">מומלץ בחום 💛</p>
+  }
+
+  <div class="sw-preview">
+    <div class="sw-preview-label">ההודעה שתישלח</div>
+    <pre class="sw-preview-text">{{ data.message }}</pre>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="sw-actions">
+  <button mat-button class="btn-cancel" (click)="cancel()">ביטול</button>
+  <span class="sw-spacer"></span>
+  <button mat-flat-button class="btn-slate" (click)="share()">
+    <mat-icon>share</mat-icon>
+    שתף
+  </button>
+</mat-dialog-actions>
