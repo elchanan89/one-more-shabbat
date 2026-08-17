@@ -8,7 +8,7 @@ import {
 } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ShabbatEvent } from '../../../../core/models/shabbat.model';
+import { getShabbatTitle, ShabbatEvent } from '../../../../core/models/shabbat.model';
 import {
   FamilyEventInput,
   FamilyEventOccurrence,
@@ -51,6 +51,10 @@ export class FamilyEventsDialogComponent implements OnInit {
 
   get event(): ShabbatEvent {
     return this.data.event;
+  }
+
+  get title(): string {
+    return getShabbatTitle(this.data.event);
   }
 
   ngOnInit(): void {

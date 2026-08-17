@@ -28,12 +28,19 @@ function getAllSaturdays(from: Date, to: Date): Date[] {
   return results;
 }
 
-export function initCurrentHebrewYear(): void {
+/**
+ * Seed every Shabbat from the start of the current Hebrew year through the end
+ * of `yearsAhead` further years, so the list never runs dry as Rosh Hashana
+ * approaches. Idempotent: existing dates are skipped, so it is safe on every
+ * boot and simply extends the range as each new year comes into view.
+ */
+export function initUpcomingHebrewYears(yearsAhead = 1): void {
   const hdate = new HDate(new Date());
   const year = hdate.getFullYear();
+  const lastYear = year + yearsAhead;
 
   const startGreg = new HDate(1, TISHREI, year).greg();
-  const endGreg = new HDate(1, TISHREI, year + 1).greg();
+  const endGreg = new HDate(1, TISHREI, lastYear + 1).greg();
 
   const saturdays = getAllSaturdays(startGreg, endGreg);
 
@@ -50,12 +57,16 @@ export function initCurrentHebrewYear(): void {
     let hebrewDate = '';
     let parasha = '';
     let parashaHe = '';
+    let holiday = '';
+    let holidayHe = '';
 
     try {
       const info = getHebrewInfo(dateStr);
       hebrewDate = info.hebrewDate;
       parasha = info.parasha;
       parashaHe = info.parashaHe;
+      holiday = info.holiday;
+      holidayHe = info.holidayHe;
     } catch {
       hebrewDate = new HDate(sat).toString();
     }
@@ -66,16 +77,20 @@ export function initCurrentHebrewYear(): void {
       hebrewDate,
       parasha,
       parashaHe,
+      holiday,
+      holidayHe,
       createdAt: now,
       updatedAt: now,
     });
   }
 
+  const span = year === lastYear ? `${year}` : `${year}-${lastYear}`;
+
   if (toInsert.length > 0) {
     shabbatService.bulkInsert(toInsert);
-    console.log(`[init] Added ${toInsert.length} Shabbatot for Hebrew year ${year}`);
+    console.log(`[init] Added ${toInsert.length} Shabbatot for Hebrew years ${span}`);
   } else {
-    console.log(`[init] Hebrew year ${year} already complete (${existing.length} entries)`);
+    console.log(`[init] Hebrew years ${span} already complete (${existing.length} entries)`);
   }
 }
 
@@ -96,11 +111,15 @@ export function refreshParashaMetadata(): void {
       if (
         info.parasha !== ev.parasha ||
         info.parashaHe !== ev.parashaHe ||
-        info.hebrewDate !== ev.hebrewDate
+        info.hebrewDate !== ev.hebrewDate ||
+        info.holiday !== (ev.holiday ?? '') ||
+        info.holidayHe !== (ev.holidayHe ?? '')
       ) {
         ev.parasha = info.parasha;
         ev.parashaHe = info.parashaHe;
         ev.hebrewDate = info.hebrewDate;
+        ev.holiday = info.holiday;
+        ev.holidayHe = info.holidayHe;
         ev.updatedAt = now;
         healed++;
       }

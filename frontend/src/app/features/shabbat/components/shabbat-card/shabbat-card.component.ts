@@ -1,6 +1,17 @@
 import { Component, input, output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
+import { getSelectedIds, getShabbatTitle, ShabbatEvent } from '../../../../core/models/shabbat.model';
+
+/** Per-festival emoji for the card icon; falls back to a generic one. */
+const HOLIDAY_EMOJI: Record<string, string> = {
+  'Rosh Hashana':   '🍎',
+  'Yom Kippur':     '🕊️',
+  'Sukkot':         '🌿',
+  'Shmini Atzeret': '🌧️',
+  'Simchat Torah':  '📜',
+  'Pesach':         '🍷',
+  'Shavuot':        '🌾',
+};
 
 @Component({
   selector: 'app-shabbat-card',
@@ -14,6 +25,21 @@ export class ShabbatCardComponent {
   familyCount = input(0);
   cardClick = output<ShabbatEvent>();
   familyClick = output<ShabbatEvent>();
+
+  /** Festival Shabbatot carry no weekly parasha — they get their own title and styling. */
+  get isHoliday(): boolean {
+    return !!this.event().holidayHe && !this.event().parashaHe;
+  }
+
+  get title(): string {
+    return getShabbatTitle(this.event());
+  }
+
+  get holidayEmoji(): string {
+    // "Chol HaMoed Sukkot" shares Sukkot's emoji
+    const base = (this.event().holiday ?? '').replace(/^Chol HaMoed\s+/, '');
+    return HOLIDAY_EMOJI[base] ?? '🕎';
+  }
 
   get selectedIds(): string[] {
     return getSelectedIds(this.event());

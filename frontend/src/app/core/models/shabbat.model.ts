@@ -10,6 +10,9 @@ export interface ShabbatEvent {
   id: string;
   parasha: string;
   parashaHe?: string;
+  /** Festival name, present only on Shabbatot that have no weekly parasha. */
+  holiday?: string;
+  holidayHe?: string;
   gregorianDate: string;
   hebrewDate: string;
   shabbatOptions?: ShabbatOption[];
@@ -19,6 +22,16 @@ export interface ShabbatEvent {
   selectedOptionId?: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * Display title for a Shabbat: the weekly parasha, or — on the festival
+ * Shabbatot that have none (Rosh Hashana, Sukkot I, Pesach …) — the festival name.
+ */
+export function getShabbatTitle(
+  ev: Pick<ShabbatEvent, 'parasha' | 'parashaHe' | 'holiday' | 'holidayHe'>
+): string {
+  return ev.parashaHe || ev.holidayHe || ev.parasha || ev.holiday || '';
 }
 
 /** Normalized list of chosen option ids (handles legacy single-select data). */
@@ -40,6 +53,8 @@ export interface HebrewInfo {
   hebrewDate: string;
   parasha: string;
   parashaHe: string;
+  holiday: string;
+  holidayHe: string;
 }
 
 export interface HistoryRecord {

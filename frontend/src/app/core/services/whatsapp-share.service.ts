@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DEFAULT_OPTION, getSelectedIds, resolveOptionTexts, ShabbatEvent } from '../models/shabbat.model';
+import { DEFAULT_OPTION, getSelectedIds, getShabbatTitle, resolveOptionTexts, ShabbatEvent } from '../models/shabbat.model';
 
 /** Footer that marks the message as coming from the app, not a forward. */
 const SIGNATURE = '🕯️ נשלח מ״עוד שבת״';
@@ -61,7 +61,7 @@ function sign(lines: string[]): string {
 }
 
 function parashaOf(ev: ShabbatEvent): string {
-  return ev.parashaHe || ev.parasha;
+  return getShabbatTitle(ev);
 }
 
 function allOptionIds(ev: ShabbatEvent): string[] {

@@ -2,7 +2,7 @@ import { Component, inject, signal, computed } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { DEFAULT_OPTION, getSelectedIds, ShabbatEvent, ShabbatOption } from '../../../../core/models/shabbat.model';
+import { DEFAULT_OPTION, getSelectedIds, getShabbatTitle, ShabbatEvent, ShabbatOption } from '../../../../core/models/shabbat.model';
 
 type Mode = 'family' | 'parents';
 
@@ -26,6 +26,8 @@ export class ShabbatOptionsComponent {
   localSelectedIds = signal<string[]>([...getSelectedIds(this.data.event)]);
 
   get event(): ShabbatEvent { return this.data.event; }
+
+  get title(): string { return getShabbatTitle(this.data.event); }
 
   allOptions = computed((): ShabbatOption[] => [
     DEFAULT_OPTION,

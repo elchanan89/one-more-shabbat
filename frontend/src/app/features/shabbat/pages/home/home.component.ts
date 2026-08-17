@@ -5,7 +5,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { getSelectedIds, ShabbatEvent } from '../../../../core/models/shabbat.model';
+import { getSelectedIds, getShabbatTitle, ShabbatEvent } from '../../../../core/models/shabbat.model';
 import { ShabbatService } from '../../../../core/services/shabbat.service';
 import { ThemeService } from '../../../../core/services/theme.service';
 import { AudioService } from '../../../../core/services/audio.service';
@@ -19,6 +19,14 @@ import { WeeklyEventsDialogComponent } from '../../dialogs/weekly-events/weekly-
 import { ShareKind, ShareWhatsappDialogComponent } from '../../dialogs/share-whatsapp/share-whatsapp-dialog.component';
 
 const PAGE_SIZE = 5;
+
+/**
+ * WhatsApp announcement prompt — off for now, so mobile behaves like desktop
+ * and saving an option never opens a share dialog. The builders and dialog are
+ * left in place; flip this to true to bring the prompt back.
+ * (Typed as boolean so the disabled branch is not flagged as unreachable.)
+ */
+const SHARE_PROMPT_ENABLED: boolean = false;
 
 @Component({
   selector: 'app-home',
@@ -134,6 +142,7 @@ export class HomeComponent implements OnInit {
     eventId: string,
     result: { patch: Partial<ShabbatEvent>; addedText?: string }
   ): void {
+    if (!SHARE_PROMPT_ENABLED) return;
     if (!this.whatsapp.isMobileView()) return;
 
     // Read back the merged event — onSaveOptions has already applied the patch.
@@ -195,7 +204,8 @@ export class HomeComponent implements OnInit {
       next: events => {
         // Never stack over a dialog the user already opened (slow responses)
         if (!events.length || this.dialog.openDialogs.length > 0) return;
-        const parashaHe = this.allEvents().find(e => e.gregorianDate === ownerDate)?.parashaHe;
+        const owner = this.allEvents().find(e => e.gregorianDate === ownerDate);
+        const parashaHe = owner ? getShabbatTitle(owner) : undefined;
         this.dialog.open(WeeklyEventsDialogComponent, {
           data: { events, parashaHe },
           width: '480px',

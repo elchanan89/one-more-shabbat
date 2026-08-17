@@ -7,6 +7,9 @@ export interface ShabbatEvent {
   id: string;
   parasha: string;
   parashaHe?: string;
+  /** Festival name, present only on Shabbatot that have no weekly parasha. */
+  holiday?: string;
+  holidayHe?: string;
   gregorianDate: string;
   hebrewDate: string;
   shabbatOptions?: ShabbatOption[];

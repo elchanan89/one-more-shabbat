@@ -6,7 +6,7 @@ import shabbatotRouter from './routes/shabbatot';
 import historyRouter from './routes/history';
 import familyEventsRouter from './routes/familyEvents';
 import { errorHandler } from './middleware/errorHandler';
-import { initCurrentHebrewYear, refreshParashaMetadata } from './services/hebrewYearService';
+import { initUpcomingHebrewYears, refreshParashaMetadata } from './services/hebrewYearService';
 import { archivePassedShabbatot } from './services/historyService';
 
 const app = express();
@@ -38,7 +38,7 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   console.log(`One More Shabbat API running on port ${PORT}`);
   try {
-    initCurrentHebrewYear();
+    initUpcomingHebrewYears();
     refreshParashaMetadata();
     archivePassedShabbatot();
   } catch (err) {

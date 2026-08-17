@@ -1,4 +1,5 @@
-<div class="card" [class.card-empty]="isEmpty()" (click)="onCardClick()" role="button" tabindex="0"
+<div class="card" [class.card-empty]="isEmpty()" [class.card-holiday]="isHoliday"
+     (click)="onCardClick()" role="button" tabindex="0"
      (keydown.enter)="onCardClick()" (keydown.space)="onCardClick()">
 
   @if (selectedIds.length) {
@@ -10,11 +11,18 @@
   <div class="card-body">
 
     <div class="card-icon" [style.background]="isEmpty() ? '#F3F4F6' : '#E0F2FE'">
-      <span class="cat-emoji">{{ isEmpty() ? '🕯️' : '✨' }}</span>
+      <span class="cat-emoji">
+        {{ isHoliday ? holidayEmoji : (isEmpty() ? '🕯️' : '✨') }}
+      </span>
     </div>
 
     <div class="card-main">
-      <h3 class="card-title">{{ event().parashaHe || event().parasha }}</h3>
+      <h3 class="card-title">
+        {{ title }}
+        @if (isHoliday) {
+          <span class="holiday-chip">חג</span>
+        }
+      </h3>
       <p class="card-date">{{ event().hebrewDate }}</p>
 
       @if (selectedText) {

@@ -29,17 +29,23 @@ export function create(req: Request, res: Response): void {
   let hebrewDate = req.body.hebrewDate || '';
   let parasha = req.body.parasha || '';
   let parashaHe = req.body.parashaHe || '';
+  let holiday = req.body.holiday || '';
+  let holidayHe = req.body.holidayHe || '';
 
   try {
     const info = getHebrewInfo(gregorianDate);
     hebrewDate = info.hebrewDate;
     parasha = info.parasha;
     parashaHe = info.parashaHe;
+    holiday = info.holiday;
+    holidayHe = info.holidayHe;
   } catch {
     // fall through — use values from request body
   }
 
-  const event = shabbatService.create({ gregorianDate, hebrewDate, parasha, parashaHe });
+  const event = shabbatService.create({
+    gregorianDate, hebrewDate, parasha, parashaHe, holiday, holidayHe,
+  });
 
   res.status(201).json(event);
 }
