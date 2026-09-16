@@ -45,8 +45,10 @@ volume, data resets on every deploy/restart**:
 2. Add variable `DATA_DIR=/data`.
 
 Then on first boot the volume is empty → history seeds from `backend/seed/` once and
-persists; shabbatot generates once and persists. Passed Shabbatot with a selection are
-appended to history automatically on each startup (deduped by date).
+persists; shabbatot generates once and persists. Every passed Shabbat is appended to
+history automatically on each startup (deduped by date) — with the chosen option's text,
+or "לא נבחר" if none was picked in time. Every history entry (auto-added or seeded) can
+also be freely edited afterwards from the History popup.
 
 > To refresh the seed history later, edit `backend/seed/history.json` and (if using a
 > volume) delete `/data/history.json` so it re-seeds.

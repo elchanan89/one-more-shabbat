@@ -18,6 +18,8 @@ export class HistoryDialogComponent implements OnInit {
 
   records = signal<HistoryRecord[]>([]);
   loading = signal(true);
+  editingId = signal<string | null>(null);
+  editText = signal('');
 
   ngOnInit(): void {
     this.http.get<HistoryRecord[]>('/api/history').subscribe({
@@ -29,6 +31,30 @@ export class HistoryDialogComponent implements OnInit {
   formatDate(dateStr: string): string {
     return new Date(dateStr + 'T00:00:00').toLocaleDateString('he-IL', {
       day: 'numeric', month: 'long', year: 'numeric',
+    });
+  }
+
+  startEdit(record: HistoryRecord): void {
+    this.editingId.set(record.id);
+    this.editText.set(record.description);
+  }
+
+  cancelEdit(): void {
+    this.editingId.set(null);
+  }
+
+  onEditInput(e: Event): void {
+    this.editText.set((e.target as HTMLTextAreaElement).value);
+  }
+
+  saveEdit(record: HistoryRecord): void {
+    const description = this.editText().trim();
+    if (!description) return;
+    this.http.put<HistoryRecord>(`/api/history/${record.id}`, { description }).subscribe({
+      next: updated => {
+        this.records.update(list => list.map(r => (r.id === updated.id ? updated : r)));
+        this.editingId.set(null);
+      },
     });
   }
 

@@ -10,4 +10,13 @@ router.get('/', (_req: Request, res: Response) => {
   res.json(historyService.getAll());
 });
 
+router.put('/:id', (req: Request, res: Response) => {
+  const updated = historyService.update(req.params.id, req.body.description);
+  if (!updated) {
+    res.status(404).json({ error: 'History record not found' });
+    return;
+  }
+  res.json(updated);
+});
+
 export default router;

@@ -13,6 +13,7 @@ export interface HistoryRecord {
 const DATA_FILE = path.join(DATA_DIR, 'history.json');
 const SEED_FILE = path.join(SEED_DIR, 'history.json');
 const DEFAULT_OPTION_TEXT = 'נשארים בבית';
+const NOT_SELECTED_TEXT = 'לא נבחר';
 
 function readData(): HistoryRecord[] {
   if (!fs.existsSync(DATA_FILE)) {
@@ -33,6 +34,16 @@ export function getAll(): HistoryRecord[] {
   return readData().sort((a, b) => b.gregorianDate.localeCompare(a.gregorianDate));
 }
 
+/** Overwrite a record's free-text description; not tied to shabbatOptions/selectedOptionIds. */
+export function update(id: string, description: string): HistoryRecord | null {
+  const history = readData();
+  const idx = history.findIndex(r => r.id === id);
+  if (idx === -1) return null;
+  history[idx] = { ...history[idx], description };
+  writeData(history);
+  return history[idx];
+}
+
 /** Chosen option ids, handling legacy single-select data. */
 function selectedIds(ev: ShabbatEvent): string[] {
   if (Array.isArray(ev.selectedOptionIds)) return ev.selectedOptionIds;
@@ -49,9 +60,10 @@ function optionTextsFor(ev: ShabbatEvent, ids: string[]): string[] {
 }
 
 /**
- * Archive every Shabbat whose date has already passed and that has a chosen
- * option, into the history list. Deduped by date so it is safe to run on each
- * startup — newly-passed Shabbatot get appended over time.
+ * Archive every Shabbat whose date has already passed into the history list —
+ * with a chosen option's text, or the "לא נבחר" placeholder if none was ever
+ * picked. Deduped by date so it is safe to run on each startup — newly-passed
+ * Shabbatot get appended over time.
  */
 export function archivePassedShabbatot(): void {
   const today = new Date();
@@ -64,11 +76,12 @@ export function archivePassedShabbatot(): void {
   let added = 0;
   for (const ev of shabbatService.getAll()) {
     if (ev.gregorianDate >= todayStr) continue;        // not past yet
-    const ids = selectedIds(ev);
-    if (ids.length === 0) continue;                     // no choice made
     if (existingDates.has(ev.gregorianDate)) continue;  // already archived
 
-    const description = optionTextsFor(ev, ids).join(', ') || DEFAULT_OPTION_TEXT;
+    const ids = selectedIds(ev);
+    const description = ids.length === 0
+      ? NOT_SELECTED_TEXT
+      : optionTextsFor(ev, ids).join(', ') || DEFAULT_OPTION_TEXT;
 
     history.push({
       id: `hist_${ev.gregorianDate}`,

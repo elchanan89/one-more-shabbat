@@ -20,8 +20,31 @@
     <div class="history-list">
       @for (record of records(); track record.id) {
         <div class="history-row">
-          <div class="history-date">{{ formatDate(record.gregorianDate) }}</div>
-          <div class="history-desc">{{ record.description }}</div>
+          @if (editingId() === record.id) {
+            <textarea
+              class="history-edit-input"
+              rows="2"
+              [value]="editText()"
+              (input)="onEditInput($event)"
+              autofocus
+            ></textarea>
+            <div class="edit-actions">
+              <button mat-icon-button class="save-btn" (click)="saveEdit(record)" aria-label="שמור">
+                <mat-icon>check</mat-icon>
+              </button>
+              <button mat-icon-button class="cancel-btn" (click)="cancelEdit()" aria-label="ביטול">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          } @else {
+            <div class="history-text">
+              <div class="history-date">{{ formatDate(record.gregorianDate) }}</div>
+              <div class="history-desc">{{ record.description }}</div>
+            </div>
+            <button mat-icon-button class="edit-btn" (click)="startEdit(record)" aria-label="עריכה">
+              <mat-icon>edit</mat-icon>
+            </button>
+          }
         </div>
       }
     </div>

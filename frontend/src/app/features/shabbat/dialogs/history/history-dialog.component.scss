@@ -77,8 +77,9 @@
 
 .history-row {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
   padding: 13px 16px;
   border-radius: 14px;
   background: rgba(var(--ink-rgb), 0.03);
@@ -89,6 +90,49 @@
     background: rgba(var(--gold-rgb), 0.06);
     border-color: rgba(var(--gold-rgb), 0.3);
     box-shadow: 0 0 18px -8px rgba(var(--gold-rgb), 0.4);
+  }
+}
+
+.history-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.edit-btn,
+.save-btn,
+.cancel-btn {
+  flex-shrink: 0;
+  color: var(--text-secondary) !important;
+}
+
+.save-btn {
+  color: var(--gold-bright) !important;
+}
+
+.edit-actions {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.history-edit-input {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: inherit;
+  color: var(--text-primary);
+  background: rgba(var(--ink-rgb), 0.04);
+  border: 1px solid rgba(var(--gold-rgb), 0.4);
+  border-radius: 10px;
+  padding: 8px 10px;
+  line-height: 1.4;
+
+  &:focus {
+    outline: none;
+    border-color: var(--gold-bright);
   }
 }
 
