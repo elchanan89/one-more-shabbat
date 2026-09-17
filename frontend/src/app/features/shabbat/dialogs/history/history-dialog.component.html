@@ -20,7 +20,30 @@
     <div class="history-list">
       @for (record of records(); track record.id) {
         <div class="history-row">
-          @if (editingId() === record.id) {
+          @if (passwordPromptId() === record.id) {
+            <div class="password-prompt">
+              <input
+                type="password"
+                class="password-input"
+                placeholder="הזן סיסמה"
+                [value]="passwordInput()"
+                (input)="onPasswordInput($event)"
+                (keyup.enter)="submitPassword(record)"
+                autofocus
+              />
+              @if (passwordError()) {
+                <span class="password-error">סיסמה שגויה</span>
+              }
+            </div>
+            <div class="edit-actions">
+              <button mat-icon-button class="save-btn" [disabled]="verifying()" (click)="submitPassword(record)" aria-label="אישור">
+                <mat-icon>check</mat-icon>
+              </button>
+              <button mat-icon-button class="cancel-btn" (click)="cancelPassword()" aria-label="ביטול">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          } @else if (editingId() === record.id) {
             <textarea
               class="history-edit-input"
               rows="2"

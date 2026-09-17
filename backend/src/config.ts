@@ -15,6 +15,12 @@ export const DATA_DIR = process.env.DATA_DIR
 /** Committed seed files (sibling of dist/ and src/, so the path holds in dev and prod). */
 export const SEED_DIR = path.join(__dirname, '../seed');
 
+/**
+ * Password required to edit/save history records (compared case-insensitively).
+ * Set HISTORY_EDIT_PASSWORD on the host to override the default.
+ */
+export const HISTORY_EDIT_PASSWORD = process.env.HISTORY_EDIT_PASSWORD || 'Odshabat@';
+
 export function ensureDataDir(): void {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
